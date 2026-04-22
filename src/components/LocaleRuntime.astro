@@ -1,0 +1,98 @@
+---
+import type { HomeDictionary } from "../i18n/home";
+
+interface Props {
+  dictionaries: Record<"en" | "id", HomeDictionary>;
+}
+
+const { dictionaries } = Astro.props;
+---
+
+<script is:inline define:vars={{ dictionaries }}>
+  const STORAGE_KEY = "portfolio-locale";
+  const SUPPORTED_LOCALES = ["en", "id"];
+
+  const readByPath = (source, path) => {
+    return path.split(".").reduce((current, key) => {
+      if (current == null) return undefined;
+      return current[key];
+    }, source);
+  };
+
+  const initialLocale = () => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved && SUPPORTED_LOCALES.includes(saved)) return saved;
+
+    const browserLocale = (navigator.language || "").toLowerCase();
+    return browserLocale.startsWith("id") ? "id" : "en";
+  };
+
+  const applyProjectTranslations = (dictionary) => {
+    document.querySelectorAll("[data-project-title-id]").forEach((node) => {
+      const key = node.getAttribute("data-project-title-id");
+      if (!key) return;
+
+      const translated = dictionary.projectTranslations?.[key]?.title;
+      if (typeof translated === "string" && translated.length > 0) {
+        node.textContent = translated;
+      }
+    });
+
+    document.querySelectorAll("[data-project-summary-id]").forEach((node) => {
+      const key = node.getAttribute("data-project-summary-id");
+      if (!key) return;
+
+      const translated = dictionary.projectTranslations?.[key]?.summary;
+      if (typeof translated === "string" && translated.length > 0) {
+        node.textContent = translated;
+      }
+    });
+  };
+
+  const applyLocale = (locale) => {
+    const safeLocale = SUPPORTED_LOCALES.includes(locale) ? locale : "en";
+    const dictionary = dictionaries[safeLocale] || dictionaries.en;
+
+    document.documentElement.lang = safeLocale;
+    document.body.dataset.locale = safeLocale;
+
+    document.querySelectorAll("[data-i18n-key]").forEach((node) => {
+      const key = node.getAttribute("data-i18n-key");
+      if (!key) return;
+
+      const translated = readByPath(dictionary, key);
+      if (typeof translated === "string") {
+        node.textContent = translated;
+      }
+    });
+
+    applyProjectTranslations(dictionary);
+
+    document.querySelectorAll("[data-locale-switch]").forEach((button) => {
+      const current = button.getAttribute("data-locale-switch");
+      button.classList.toggle("is-active", current === safeLocale);
+    });
+
+    localStorage.setItem(STORAGE_KEY, safeLocale);
+  };
+
+  const initLocaleSystem = () => {
+    const locale = initialLocale();
+    applyLocale(locale);
+
+    document.querySelectorAll("[data-locale-switch]").forEach((button) => {
+      button.addEventListener("click", () => {
+        applyLocale(button.getAttribute("data-locale-switch") || "en");
+      });
+    });
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initLocaleSystem, {
+      once: true,
+    });
+  } else {
+    initLocaleSystem();
+  }
+</script>
+

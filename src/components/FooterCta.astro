@@ -1,0 +1,18 @@
+---
+import { HOME_COPY } from "../i18n/home";
+
+const footer = HOME_COPY.en.footer;
+---
+
+<footer class="page-footer">
+  <a class="footer-card" href="#contact">
+    <p class="footer-end" data-i18n-key="footer.end">{footer.end}</p>
+    <p class="footer-title">
+      <span data-i18n-key="footer.title">{footer.title}</span> <span>&uarr;</span>
+    </p>
+    <p class="footer-subtitle" data-i18n-key="footer.subtitle">
+      {footer.subtitle}
+    </p>
+  </a>
+</footer>
+

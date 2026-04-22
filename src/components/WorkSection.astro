@@ -1,0 +1,80 @@
+---
+import { HOME_COPY } from "../i18n/home";
+
+const work = HOME_COPY.en.work;
+---
+
+<section>
+  <article class="paper-card tilt-negative">
+    <span class="card-label" data-i18n-key="work.badge">{work.badge}</span>
+    <span class="pin-dot" aria-hidden="true"></span>
+
+    <div class="work-head">
+      <button type="button" class="line-btn" data-work-expand data-i18n-key="work.expandAll">
+        {work.expandAll}
+      </button>
+    </div>
+
+    <div class="work-list">
+      {
+        work.entries.map((entry, index) => (
+          <div class="work-row" data-work-row>
+            <p class="work-arrow" aria-hidden="true" data-work-arrow>&gt;</p>
+            <p class="work-period" data-i18n-key={`work.entries.${index}.period`}>
+              {entry.period}
+            </p>
+            <p class="work-roleline">
+              <span data-i18n-key={`work.entries.${index}.role`}>{entry.role}</span>
+              <span class="work-sep"> · </span>
+              <span data-i18n-key={`work.entries.${index}.company`}>
+                {entry.company}
+              </span>
+            </p>
+            <div class="work-desc-wrap">
+              <p class="work-desc" data-i18n-key={`work.entries.${index}.description`}>
+                {entry.description}
+              </p>
+            </div>
+            <p class="work-star" aria-hidden={!entry.featured}>
+              {entry.featured ? "*" : ""}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </article>
+</section>
+
+<script is:inline>
+  (() => {
+    const expandBtn = document.querySelector("[data-work-expand]");
+    const rows = Array.from(document.querySelectorAll("[data-work-row]"));
+    if (rows.length === 0) return;
+
+    let allExpanded = false;
+
+    const setRowExpanded = (row, expanded) => {
+      const wrap = row.querySelector(".work-desc-wrap");
+      const arrow = row.querySelector("[data-work-arrow]");
+      if (wrap) wrap.classList.toggle("is-expanded", expanded);
+      if (arrow) arrow.textContent = expanded ? "v" : ">";
+    };
+
+    rows.forEach((row) => {
+      row.addEventListener("click", () => {
+        const wrap = row.querySelector(".work-desc-wrap");
+        const isExpanded = wrap ? wrap.classList.contains("is-expanded") : false;
+        setRowExpanded(row, !isExpanded);
+      });
+    });
+
+    if (expandBtn) {
+      expandBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        allExpanded = !allExpanded;
+        rows.forEach((row) => setRowExpanded(row, allExpanded));
+        expandBtn.textContent = allExpanded ? "- collapse all" : "+ expand all";
+      });
+    }
+  })();
+</script>

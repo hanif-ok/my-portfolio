@@ -1,0 +1,29 @@
+---
+import { HOME_COPY } from "../i18n/home";
+
+const preview = HOME_COPY.en.skillsPreview;
+---
+
+<section>
+  <article class="paper-card tilt-negative">
+    <span class="card-label" data-i18n-key="skillsPreview.badge"
+      >{preview.badge}</span
+    >
+    <span class="pin-dot" aria-hidden="true"></span>
+
+    <h2 class="card-title" data-i18n-key="skillsPreview.title">{preview.title}</h2>
+    <div class="testimony-box">
+      <div class="carousel-dots" aria-hidden="true">
+        <span class="is-active"></span><span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <div class="preview-footer">
+      <p data-i18n-key="skillsPreview.hint">{preview.hint}</p>
+      <button type="button" class="line-btn" data-i18n-key="skillsPreview.button">
+        {preview.button}
+      </button>
+    </div>
+  </article>
+</section>
+

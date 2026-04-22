@@ -1,0 +1,35 @@
+---
+import { HOME_COPY } from "../i18n/home";
+
+const contact = HOME_COPY.en.contact;
+---
+
+<section id="contact">
+  <article class="paper-card tilt-positive">
+    <span class="card-label" data-i18n-key="contact.badge">{contact.badge}</span>
+    <span class="pin-dot" aria-hidden="true"></span>
+
+    <h2 class="card-title" data-i18n-key="contact.title">{contact.title}</h2>
+    <div class="contact-list">
+      <p>
+        <span data-i18n-key="contact.labels.email">{contact.labels.email}</span>
+        <a href="#">hi@your.name</a>
+      </p>
+      <p>
+        <span data-i18n-key="contact.labels.github">{contact.labels.github}</span>
+        <a href="#">@you</a>
+      </p>
+      <p>
+        <span data-i18n-key="contact.labels.mastodon"
+          >{contact.labels.mastodon}</span
+        >
+        <a href="#">@you@host</a>
+      </p>
+      <p>
+        <span data-i18n-key="contact.labels.rss">{contact.labels.rss}</span>
+        <a href="#">feed.xml</a>
+      </p>
+    </div>
+  </article>
+</section>
+

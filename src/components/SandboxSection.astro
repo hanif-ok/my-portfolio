@@ -1,0 +1,28 @@
+---
+import { HOME_COPY } from "../i18n/home";
+
+const sandbox = HOME_COPY.en.sandbox;
+---
+
+<section>
+  <article class="paper-card tilt-positive">
+    <span class="card-label" data-i18n-key="sandbox.badge">{sandbox.badge}</span>
+    <span class="pin-dot" aria-hidden="true"></span>
+
+    <div class="sandbox-grid">
+      {
+        sandbox.items.map((item, index) => (
+          <a class="sandbox-item" href="#">
+            <span class="sandbox-box" aria-hidden="true"></span>
+            <span data-i18n-key={`sandbox.items.${index}`}>{item}</span>
+          </a>
+        ))
+      }
+    </div>
+
+    <div class="row-cta">
+      <a href="#" class="row-link-red" data-i18n-key="sandbox.cta">{sandbox.cta}</a>
+    </div>
+  </article>
+</section>
+

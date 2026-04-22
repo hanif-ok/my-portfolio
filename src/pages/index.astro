@@ -1,17 +1,89 @@
 ---
+import { getCollection } from "astro:content";
+import BlogSection from "../components/BlogSection.astro";
+import ContactSection from "../components/ContactSection.astro";
+import FooterCta from "../components/FooterCta.astro";
+import FullSkillsSection from "../components/FullSkillsSection.astro";
+import HeroNowRow from "../components/HeroNowRow.astro";
+import LocaleRuntime from "../components/LocaleRuntime.astro";
+import NavBar from "../components/NavBar.astro";
+import ProjectsSection from "../components/ProjectsSection.astro";
+import SandboxSection from "../components/SandboxSection.astro";
+import SkillsPreviewSection from "../components/SkillsPreviewSection.astro";
+import WorkSection from "../components/WorkSection.astro";
+import { HOME_COPY } from "../i18n/home";
+import BaseLayout from "../layouts/BaseLayout.astro";
 
+const allBlogPosts = (
+  await getCollection("blog", ({ data }) => !data.draft)
+).sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+
+const latestPosts = allBlogPosts.slice(0, 4);
+
+const featuredProjects = (
+  await getCollection("projects", ({ data }) => data.featured)
+).sort((a, b) => {
+  const orderA = a.data.featuredOrder ?? Number.MAX_SAFE_INTEGER;
+  const orderB = b.data.featuredOrder ?? Number.MAX_SAFE_INTEGER;
+
+  if (orderA !== orderB) return orderA - orderB;
+  return b.data.year - a.data.year;
+});
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="my-portfolio">
+  <NavBar />
+  <main class="portfolio-page">
+    <div class="content-flow">
+      <HeroNowRow />
+      <WorkSection />
+      <ProjectsSection projects={featuredProjects} />
+
+      <div class="section-two-up">
+        <BlogSection posts={latestPosts} totalCount={allBlogPosts.length} />
+        <SandboxSection />
+      </div>
+
+      <div class="section-two-up">
+        <SkillsPreviewSection />
+        <ContactSection />
+      </div>
+
+      <FullSkillsSection />
+      <FooterCta />
+    </div>
+  </main>
+
+  <LocaleRuntime dictionaries={HOME_COPY} />
+
+  <script is:inline>
+    (() => {
+      const cards = Array.from(
+        document.querySelectorAll(".paper-card, .footer-card")
+      );
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.08, rootMargin: "0px 0px -20px 0px" }
+      );
+
+      let stagger = 0;
+      const vh = window.innerHeight;
+
+      cards.forEach((card) => {
+        if (card.getBoundingClientRect().top < vh) {
+          card.style.setProperty("--card-delay", `${stagger * 100}ms`);
+          stagger++;
+        }
+        observer.observe(card);
+      });
+    })();
+  </script>
+</BaseLayout>

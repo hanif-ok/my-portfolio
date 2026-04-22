@@ -1,0 +1,135 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { HOME_COPY } from "../i18n/home";
+
+interface Props {
+  projects: CollectionEntry<"projects">[];
+}
+
+const { projects } = Astro.props;
+const labels = HOME_COPY.en.projects;
+---
+
+<section>
+  <article class="paper-card tilt-positive" data-project-carousel>
+    <span class="card-label" data-i18n-key="projects.badge">{labels.badge}</span>
+    <span class="pin-dot" aria-hidden="true"></span>
+
+    {
+      projects.length > 0 ? (
+        <>
+          <div class="project-carousel-body">
+          <div class="project-stage">
+            {projects.map((project, index) => (
+              <article
+                class={`project-slide ${index === 0 ? "is-active" : ""}`}
+                data-project-slide
+              >
+                <div class="project-media">
+                  {project.data.image ? (
+                    <img src={project.data.image} alt={project.data.title} loading="lazy" />
+                  ) : (
+                    <div class="project-placeholder" aria-hidden="true"></div>
+                  )}
+                  <p class="project-year">{project.data.year}</p>
+                </div>
+
+                <div class="project-content">
+                  <h3 data-project-title-id={project.data.titleId}>{project.data.title}</h3>
+                  <p data-project-summary-id={project.data.summaryId}>
+                    {project.data.summary}
+                  </p>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <div class="project-controls">
+            <p class="project-count" data-project-count>
+              01 / {String(projects.length).padStart(2, "0")}
+            </p>
+
+            <div class="project-dots">
+              {projects.map((_, index) => (
+                <button
+                  type="button"
+                  class={`project-dot ${index === 0 ? "is-active" : ""}`}
+                  data-project-dot={index}
+                  aria-label={`Show project ${index + 1}`}
+                ></button>
+              ))}
+            </div>
+
+            <div class="project-arrows">
+              <button type="button" class="line-btn square" data-project-prev>
+                &larr;
+              </button>
+              <button type="button" class="line-btn square" data-project-next>
+                &rarr;
+              </button>
+            </div>
+          </div>
+          </div>
+        </>
+      ) : (
+        <p class="empty-state">Add featured projects in src/content/projects.</p>
+      )
+    }
+
+    <div class="row-cta">
+      <a href="#" class="row-link-red" data-i18n-key="projects.seeAll"
+        >{labels.seeAll}</a
+      >
+    </div>
+  </article>
+</section>
+
+<script is:inline>
+  (() => {
+    const root = document.querySelector("[data-project-carousel]");
+    if (!root) return;
+
+    const slides = Array.from(root.querySelectorAll("[data-project-slide]"));
+    const dots = Array.from(root.querySelectorAll("[data-project-dot]"));
+    const count = root.querySelector("[data-project-count]");
+    const prev = root.querySelector("[data-project-prev]");
+    const next = root.querySelector("[data-project-next]");
+
+    if (slides.length === 0 || !count || !prev || !next) return;
+
+    let active = 0;
+    const total = slides.length;
+
+    const render = () => {
+      slides.forEach((slide, index) => {
+        slide.classList.toggle("is-active", index === active);
+      });
+
+      dots.forEach((dot, index) => {
+        dot.classList.toggle("is-active", index === active);
+      });
+
+      count.textContent = `${String(active + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}`;
+    };
+
+    prev.addEventListener("click", () => {
+      active = active === 0 ? total - 1 : active - 1;
+      render();
+    });
+
+    next.addEventListener("click", () => {
+      active = active === total - 1 ? 0 : active + 1;
+      render();
+    });
+
+    dots.forEach((dot, index) => {
+      dot.addEventListener("click", () => {
+        active = index;
+        render();
+      });
+    });
+
+    render();
+  })();
+</script>
+

@@ -1,0 +1,51 @@
+---
+import { HOME_COPY } from "../i18n/home";
+
+const hero = HOME_COPY.en.hero;
+const now = HOME_COPY.en.now;
+---
+
+<section class="section-two-up">
+  <article class="paper-card tilt-negative">
+    <span class="card-label" data-i18n-key="hero.badge">{hero.badge}</span>
+    <span class="pin-dot" aria-hidden="true"></span>
+
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <h1 class="hero-heading">
+          <span data-i18n-key="hero.introLine1">{hero.introLine1}</span><br />
+          <span data-i18n-key="hero.introLine2">{hero.introLine2}</span>
+        </h1>
+        <div class="hero-lines" aria-hidden="true">
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+
+      <div class="hero-avatar-wrap">
+        <div class="hero-avatar" aria-hidden="true">
+          <span class="avatar-head"></span>
+          <span class="avatar-body"></span>
+        </div>
+        <a href="#contact" class="hero-contact" data-i18n-key="hero.contactCta"
+          >{hero.contactCta}</a
+        >
+      </div>
+    </div>
+  </article>
+
+  <article class="paper-card tilt-positive">
+    <span class="card-label" data-i18n-key="now.badge">{now.badge}</span>
+    <span class="pin-dot" aria-hidden="true"></span>
+
+    <h2 class="card-title" data-i18n-key="now.title">{now.title}</h2>
+    <ul class="bullet-list">
+      {
+        now.bullets.map((item, index) => (
+          <li data-i18n-key={`now.bullets.${index}`}>{item}</li>
+        ))
+      }
+    </ul>
+  </article>
+</section>
+

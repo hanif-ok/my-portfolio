@@ -1,0 +1,43 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  posts: CollectionEntry<"blog">[];
+  totalCount: number;
+}
+
+const { posts, totalCount } = Astro.props;
+
+function formatPostMeta(date: Date, readMinutes: number): string {
+  const month = date
+    .toLocaleDateString("en-US", { month: "short" })
+    .toLowerCase();
+  const day = date.toLocaleDateString("en-US", { day: "2-digit" });
+  return `${month} ${day} - ${readMinutes}min`;
+}
+---
+
+<section>
+  <article class="paper-card tilt-negative">
+    <span class="card-label">/BLOG - {totalCount} POSTS</span>
+    <span class="pin-dot" aria-hidden="true"></span>
+
+    <div class="blog-list">
+      {
+        posts.map((post) => (
+          <a class="blog-item" href="#">
+            <span class="blog-title">{post.data.title}</span>
+            <span class="blog-meta">
+              {formatPostMeta(post.data.pubDate, post.data.readMinutes)}
+            </span>
+          </a>
+        ))
+      }
+    </div>
+
+    <div class="row-cta">
+      <a href="#" class="row-link-red">read the feed -&gt;</a>
+    </div>
+  </article>
+</section>
+
