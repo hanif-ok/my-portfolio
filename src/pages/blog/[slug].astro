@@ -1,0 +1,246 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import NavBar from "../../components/NavBar.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog", ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const formatted = post.data.pubDate.toLocaleDateString("en-US", {
+  month: "long",
+  day: "numeric",
+  year: "numeric",
+});
+---
+
+<BaseLayout title={`${post.data.title} — feed`}>
+  <NavBar page="blog" />
+  <main class="portfolio-page">
+    <div class="content-flow">
+
+      <a href="/blog" class="back-link">← back to feed</a>
+
+      <article>
+        <div class="paper-card tilt-positive is-visible">
+          <span class="card-label">/BLOG</span>
+          <span class="pin-dot"></span>
+          <div class="article-meta">
+            <span class="article-date">{formatted}</span>
+            <span class="article-sep">·</span>
+            <span class="article-read">{post.data.readMinutes}min read</span>
+            {(post.data.tags ?? []).map((tag) => (
+              <span class="article-tag">{tag}</span>
+            ))}
+          </div>
+          <h1 class="article-title">{post.data.title}</h1>
+          <p class="article-excerpt">{post.data.excerpt}</p>
+        </div>
+
+        <div class="article-body">
+          <Content />
+        </div>
+      </article>
+
+      <div class="article-footer">
+        <a href="/blog" class="read-btn">← back to feed</a>
+      </div>
+
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .back-link {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--color-ink-muted);
+    letter-spacing: 0.04em;
+    transition: color 0.15s;
+  }
+
+  .back-link:hover {
+    color: var(--color-blueprint);
+  }
+
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.45rem;
+  }
+
+  .article-date,
+  .article-read {
+    font-family: var(--font-mono);
+    font-size: 0.71rem;
+    color: var(--color-ink-muted);
+  }
+
+  .article-sep {
+    color: var(--color-ink-muted);
+    opacity: 0.5;
+  }
+
+  .article-tag {
+    border: var(--line-soft);
+    font-family: var(--font-mono);
+    font-size: 0.57rem;
+    color: var(--color-ink-muted);
+    padding: 0.07rem 0.36rem;
+    letter-spacing: 0.04em;
+  }
+
+  .article-title {
+    margin: 0 0 0.45rem;
+    font-family: var(--font-hand);
+    font-size: clamp(1.9rem, 3vw + 0.8rem, 2.9rem);
+    font-weight: 400;
+    line-height: 1.05;
+    color: var(--color-ink-primary);
+  }
+
+  .article-excerpt {
+    margin: 0;
+    font-family: var(--font-kalam);
+    font-size: 1.18rem;
+    color: var(--color-ink-secondary);
+    line-height: 1.35;
+  }
+
+  /* Article prose */
+  .article-body {
+    margin-top: 0.5rem;
+    max-width: 72ch;
+  }
+
+  .article-body :global(h2) {
+    margin: 2.2rem 0 0.6rem;
+    font-family: var(--font-hand);
+    font-size: 1.85rem;
+    font-weight: 400;
+    color: var(--color-ink-primary);
+    line-height: 1.1;
+  }
+
+  .article-body :global(h3) {
+    margin: 1.6rem 0 0.4rem;
+    font-family: var(--font-script);
+    font-size: 1.65rem;
+    font-weight: 400;
+    color: var(--color-ink-primary);
+    line-height: 1.1;
+  }
+
+  .article-body :global(p) {
+    margin: 0 0 1.05rem;
+    font-family: var(--font-kalam);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--color-ink-secondary);
+  }
+
+  .article-body :global(ul),
+  .article-body :global(ol) {
+    margin: 0 0 1rem;
+    padding-left: 1.4rem;
+  }
+
+  .article-body :global(li) {
+    margin-bottom: 0.3rem;
+    font-family: var(--font-kalam);
+    font-size: 1.08rem;
+    line-height: 1.5;
+    color: var(--color-ink-secondary);
+  }
+
+  .article-body :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    background: var(--color-blueprint-soft);
+    border: 1px solid rgba(52, 152, 219, 0.2);
+    padding: 0.1rem 0.35rem;
+  }
+
+  .article-body :global(pre) {
+    margin: 1.2rem 0;
+    border: var(--line-main);
+    background: var(--color-ink-primary);
+    padding: 1.15rem 1.3rem;
+    overflow-x: auto;
+  }
+
+  .article-body :global(pre code) {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 0.81rem;
+    color: var(--color-paper);
+  }
+
+  .article-body :global(blockquote) {
+    margin: 1.2rem 0;
+    border-left: 3px solid var(--color-blueprint);
+    background: var(--color-blueprint-soft);
+    padding: 0.55rem 0.9rem 0.55rem 1rem;
+  }
+
+  .article-body :global(blockquote p) {
+    margin: 0;
+    font-style: italic;
+    color: var(--color-ink-secondary);
+  }
+
+  .article-body :global(hr) {
+    border: none;
+    border-top: var(--line-soft);
+    margin: 2rem 0;
+  }
+
+  .article-body :global(a) {
+    color: var(--color-blueprint);
+    border-bottom: 1px solid rgba(52, 152, 219, 0.3);
+    transition: border-color 0.15s;
+  }
+
+  .article-body :global(a:hover) {
+    border-color: var(--color-blueprint);
+  }
+
+  .article-body :global(strong) {
+    font-weight: 700;
+    color: var(--color-ink-primary);
+  }
+
+  .article-footer {
+    display: flex;
+    padding-bottom: 2rem;
+  }
+
+  .read-btn {
+    display: inline-block;
+    border: var(--line-main);
+    background: var(--color-paper);
+    color: var(--color-ink-secondary);
+    font-family: var(--font-mono);
+    font-size: 0.67rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.65rem;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .read-btn:hover {
+    background: var(--color-ink-primary);
+    color: var(--color-paper);
+  }
+</style>

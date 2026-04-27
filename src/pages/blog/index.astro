@@ -1,0 +1,408 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import NavBar from "../../components/NavBar.astro";
+
+const allPosts = (
+  await getCollection("blog", ({ data }) => !data.draft)
+).sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+
+type Post = (typeof allPosts)[0];
+type Group = { key: string; label: string; posts: Post[] };
+
+const grouped: Group[] = [];
+for (const post of allPosts) {
+  const d = post.data.pubDate;
+  const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+  const label = d.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+  const existing = grouped.find((g) => g.key === key);
+  if (existing) {
+    existing.posts.push(post);
+  } else {
+    grouped.push({ key, label, posts: [post] });
+  }
+}
+---
+
+<BaseLayout title="the feed — blog">
+  <NavBar page="blog" />
+  <main class="portfolio-page">
+    <div class="content-flow">
+
+      <div class="paper-card tilt-negative is-visible">
+        <span class="card-label">/BLOG — {allPosts.length} ENTRIES</span>
+        <span class="pin-dot"></span>
+        <h1 class="card-title">the feed.</h1>
+        <p class="blog-page-sub">thoughts on tech, ops &amp; craft.</p>
+      </div>
+
+      <div class="blog-search-bar is-visible">
+        <label class="search-label" for="blog-search">search entries</label>
+        <div class="search-row">
+          <span class="search-icon" aria-hidden="true">⌕</span>
+          <input
+            id="blog-search"
+            class="search-input"
+            type="text"
+            placeholder="filter by title, tag, or keyword..."
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <span class="search-count" id="search-count">{allPosts.length} entries</span>
+        </div>
+      </div>
+
+      <div id="blog-feed">
+        {grouped.map((group) => (
+          <div class="month-group" data-key={group.key}>
+            <button class="month-toggle" type="button" aria-expanded="true">
+              <span class="month-label">{group.label.toLowerCase()}</span>
+              <span class="month-count">
+                {group.posts.length} {group.posts.length === 1 ? "entry" : "entries"}
+              </span>
+              <span class="month-chevron" aria-hidden="true">▾</span>
+            </button>
+
+            <div class="month-body">
+              {group.posts.map((post) => (
+                <div
+                  class="feed-item"
+                  data-searchable={`${post.data.title} ${post.data.excerpt} ${(post.data.tags ?? []).join(" ")}`}
+                >
+                  <div class="feed-meta">
+                    <span class="feed-date">
+                      {post.data.pubDate.toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </span>
+                    <span class="feed-sep">·</span>
+                    <span class="feed-read">{post.data.readMinutes}min read</span>
+                    {(post.data.tags ?? []).map((tag) => (
+                      <span class="feed-tag">{tag}</span>
+                    ))}
+                  </div>
+                  <h2 class="feed-title">{post.data.title}</h2>
+                  <p class="feed-excerpt">{post.data.excerpt}</p>
+                  <a href={`/blog/${post.id}`} class="read-btn">
+                    read article <span aria-hidden="true">—&gt;</span>
+                  </a>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+
+        <p class="no-results" id="no-results" hidden>
+          no entries match that search.
+        </p>
+      </div>
+
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .blog-page-sub {
+    margin: 0.25rem 0 0;
+    font-family: var(--font-kalam);
+    font-size: 1.15rem;
+    color: var(--color-ink-secondary);
+  }
+
+  /* Search bar */
+  .blog-search-bar {
+    border: var(--line-main);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-card);
+    padding: 0.85rem 1.1rem 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .search-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-ink-muted);
+  }
+
+  .search-row {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+
+  .search-icon {
+    font-size: 1.15rem;
+    color: var(--color-ink-muted);
+    line-height: 1;
+    user-select: none;
+    flex-shrink: 0;
+  }
+
+  .search-input {
+    flex: 1;
+    border: var(--line-soft);
+    background: var(--color-paper);
+    color: var(--color-ink-primary);
+    font-family: var(--font-mono);
+    font-size: 0.86rem;
+    padding: 0.42rem 0.65rem;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .search-input:focus {
+    border-color: var(--color-blueprint);
+    border-style: solid;
+  }
+
+  .search-input::placeholder {
+    color: var(--color-ink-muted);
+    opacity: 0.65;
+  }
+
+  .search-count {
+    font-family: var(--font-mono);
+    font-size: 0.67rem;
+    color: var(--color-ink-muted);
+    white-space: nowrap;
+    min-width: 5rem;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* Month accordion */
+  .month-group {
+    border-top: var(--line-main);
+  }
+
+  .month-group:last-of-type {
+    border-bottom: var(--line-main);
+  }
+
+  .month-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    width: 100%;
+    border: none;
+    background: none;
+    padding: 0.9rem 0.1rem;
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .month-toggle:hover .month-label {
+    color: var(--color-blueprint);
+  }
+
+  .month-label {
+    font-family: var(--font-hand);
+    font-size: 1.55rem;
+    color: var(--color-ink-primary);
+    line-height: 1;
+    transition: color 0.15s;
+  }
+
+  .month-count {
+    font-family: var(--font-mono);
+    font-size: 0.63rem;
+    color: var(--color-ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .month-chevron {
+    margin-left: auto;
+    font-size: 0.85rem;
+    color: var(--color-ink-muted);
+    transition: transform 0.2s ease;
+    display: inline-block;
+    line-height: 1;
+  }
+
+  .month-toggle[aria-expanded="false"] .month-chevron {
+    transform: rotate(-90deg);
+  }
+
+  .month-body {
+    padding-bottom: 0.25rem;
+  }
+
+  /* Feed item */
+  .feed-item {
+    border-bottom: var(--line-soft);
+    padding: 1.3rem 0.2rem 1.4rem;
+  }
+
+  .feed-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0.6rem;
+  }
+
+  .feed-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.38rem;
+  }
+
+  .feed-date,
+  .feed-read {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-ink-muted);
+  }
+
+  .feed-sep {
+    color: var(--color-ink-muted);
+    font-size: 0.8rem;
+    opacity: 0.5;
+  }
+
+  .feed-tag {
+    border: var(--line-soft);
+    font-family: var(--font-mono);
+    font-size: 0.57rem;
+    color: var(--color-ink-muted);
+    padding: 0.07rem 0.36rem;
+    letter-spacing: 0.04em;
+  }
+
+  .feed-title {
+    margin: 0 0 0.4rem;
+    font-family: var(--font-script);
+    font-size: 2.15rem;
+    font-weight: 400;
+    line-height: 1.05;
+    color: var(--color-ink-primary);
+  }
+
+  .feed-excerpt {
+    margin: 0 0 0.85rem;
+    font-family: var(--font-kalam);
+    font-size: 1.1rem;
+    color: var(--color-ink-secondary);
+    line-height: 1.42;
+    max-width: 62ch;
+  }
+
+  .read-btn {
+    display: inline-block;
+    border: var(--line-main);
+    background: var(--color-paper);
+    color: var(--color-ink-secondary);
+    font-family: var(--font-mono);
+    font-size: 0.67rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.65rem;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .read-btn:hover {
+    background: var(--color-ink-primary);
+    color: var(--color-paper);
+  }
+
+  .no-results {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--color-ink-muted);
+    padding: 2.5rem 0;
+    text-align: center;
+  }
+
+  @media (max-width: 640px) {
+    .feed-title {
+      font-size: 1.8rem;
+    }
+
+    .search-count {
+      display: none;
+    }
+
+    .month-label {
+      font-size: 1.35rem;
+    }
+  }
+</style>
+
+<script>
+  (() => {
+    const searchInput = document.getElementById("blog-search") as HTMLInputElement;
+    const countEl = document.getElementById("search-count") as HTMLElement;
+    const noResults = document.getElementById("no-results") as HTMLElement;
+    const allItems = Array.from(document.querySelectorAll<HTMLElement>(".feed-item"));
+    const allGroups = Array.from(document.querySelectorAll<HTMLElement>(".month-group"));
+    const totalCount = allItems.length;
+
+    // Store collapsed state per group
+    const collapsedGroups = new Set<HTMLElement>();
+
+    // Accordion toggle
+    allGroups.forEach((group) => {
+      const btn = group.querySelector<HTMLButtonElement>(".month-toggle")!;
+      const body = group.querySelector<HTMLElement>(".month-body")!;
+
+      btn.addEventListener("click", () => {
+        const isExpanded = btn.getAttribute("aria-expanded") === "true";
+        btn.setAttribute("aria-expanded", String(!isExpanded));
+        body.style.display = isExpanded ? "none" : "";
+        if (isExpanded) {
+          collapsedGroups.add(group);
+        } else {
+          collapsedGroups.delete(group);
+        }
+      });
+    });
+
+    searchInput.addEventListener("input", () => {
+      const q = searchInput.value.trim().toLowerCase();
+
+      if (q === "") {
+        // Restore accordion state
+        allItems.forEach((item) => (item.style.display = ""));
+        allGroups.forEach((group) => {
+          group.style.display = "";
+          const body = group.querySelector<HTMLElement>(".month-body")!;
+          const btn = group.querySelector<HTMLButtonElement>(".month-toggle")!;
+          const collapsed = collapsedGroups.has(group);
+          body.style.display = collapsed ? "none" : "";
+          btn.setAttribute("aria-expanded", String(!collapsed));
+        });
+        noResults.hidden = true;
+        countEl.textContent = `${totalCount} entries`;
+        return;
+      }
+
+      // Filter items
+      let visible = 0;
+      allItems.forEach((item) => {
+        const text = (item.dataset.searchable ?? "").toLowerCase();
+        const match = text.includes(q);
+        item.style.display = match ? "" : "none";
+        if (match) visible++;
+      });
+
+      // Show/hide groups, expand all while searching
+      allGroups.forEach((group) => {
+        const body = group.querySelector<HTMLElement>(".month-body")!;
+        const btn = group.querySelector<HTMLButtonElement>(".month-toggle")!;
+        const items = group.querySelectorAll<HTMLElement>(".feed-item");
+        const hasVisible = Array.from(items).some((item) => item.style.display !== "none");
+        group.style.display = hasVisible ? "" : "none";
+        body.style.display = "";
+        btn.setAttribute("aria-expanded", "true");
+      });
+
+      noResults.hidden = visible > 0;
+      countEl.textContent = `${visible} ${visible === 1 ? "entry" : "entries"}`;
+    });
+  })();
+</script>

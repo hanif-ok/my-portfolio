@@ -12,7 +12,7 @@ export interface HomeDictionary {
   hero: {
     badge: string;
     introLine1: string;
-    introLine2: string;
+    introLine2: string[];
     contactCta: string;
   };
   now: {
@@ -24,10 +24,11 @@ export interface HomeDictionary {
     badge: string;
     expandAll: string;
     entries: Array<{
-      period: string;
+      periodStart: string;
+      periodEnd: string;
       role: string;
       company: string;
-      description: string;
+      description: string[];
       featured: boolean;
     }>;
   };
@@ -52,18 +53,14 @@ export interface HomeDictionary {
     labels: {
       email: string;
       github: string;
-      mastodon: string;
-      rss: string;
+      // mastodon: string;
+      // rss: string;
     };
   };
   fullSkills: {
     title: string;
     subtitle: string;
     slug: string;
-    groups: Array<{
-      title: string;
-      items: string[];
-    }>;
   };
   footer: {
     end: string;
@@ -79,6 +76,85 @@ export interface HomeDictionary {
   >;
 }
 
+export const SKILL_GROUPS: Array<{ title: string; items: string[] }> = [
+  {
+    title: "languages",
+    items: [
+      "JavaScript / TypeScript",
+      "Python",
+      "Go",
+      "Bash / Zsh",
+      "SQL",
+      "HTML / CSS",
+      "Lua",
+      "a little Rust",
+    ],
+  },
+  {
+    title: "frontend",
+    items: [
+      "React",
+      "Svelte",
+      "CSS Grid / Flex",
+      "Vite",
+      "Canvas + SVG",
+      "web components",
+      "Tailwind",
+      "design tokens",
+    ],
+  },
+  {
+    title: "backend / scripting",
+    items: [
+      "Node / Express",
+      "Flask",
+      "Postgres",
+      "Redis",
+      "REST & webhooks",
+      "cron & workers",
+      "scraping (Playwright)",
+      "a little Rails",
+    ],
+  },
+  {
+    title: "IT support",
+    items: [
+      "Active Directory",
+      "Windows Server",
+      "macOS / Jamf",
+      "Intune / MDM",
+      "Okta / SSO",
+      "networking & DNS",
+      "printers (ugh)",
+      "Zendesk / Jira",
+    ],
+  },
+  {
+    title: "devops & tools",
+    items: [
+      "Git & GitHub Actions",
+      "Docker",
+      "Nginx",
+      "Linux (Debian, Arch)",
+      "VS Code",
+      "Figma",
+      "Obsidian",
+      "tmux",
+    ],
+  },
+  {
+    title: "soft",
+    items: [
+      "ticket triage",
+      "writing clearly",
+      "pair debugging",
+      "patience",
+      "teaching users",
+      "knowing when to google",
+    ],
+  },
+];
+
 const ENGLISH_COPY: HomeDictionary = {
   browserTitle: "your.name - a filing cabinet",
   nav: {
@@ -90,44 +166,53 @@ const ENGLISH_COPY: HomeDictionary = {
   },
   hero: {
     badge: "HELLO",
-    introLine1: "I'm Hanif Omar Kertapati, a",
-    introLine2: "Software Developer",
+    introLine1: "Hanif Omar Kertapati,",
+    introLine2: ["Software Developer", "Automation Engineer", "IT Support"],
     contactCta: "contact me>",
   },
   now: {
     badge: "NOW - APR '26",
     title: "currently-",
     bullets: [
-      "IT Support II @ Acme",
-      "shipping small JS toys",
-      "open to dev roles",
+      "Looking for new opportunities",
+      "Learning a little bit of everything",
+      "Finding new projects",
     ],
   },
   work: {
-    badge: "WORK - trail of jobs",
+    badge: "WORK",
     expandAll: "+ expand all",
     entries: [
       {
-        period: "2024-now",
-        role: "IT Support II",
-        company: "Acme Corp",
-        description: "",
+        periodStart: "Oct 2025",
+        periodEnd: "Apr 2026",
+        role: "IT Support | Software Engineer Intern",
+        company: "PT Asuransi Kredit Indonesia",
+        description: [
+          "Automated internal email delivery using n8n via Puppeteer, reducing manual distribution effort and improving consistency.",
+          "Engineered an end-to-end Lead Management CRM using Flutter and Supabase over several iterations, streamlining the sales pipeline and UI/UX.",
+          "Developed a Next.js target tracker to monitor annual insurance KPIs in real-time.",
+          "Co-developed an HVC CRM with the Networking Dept using Next.js for VIP client retention.",
+          "Managed meeting documentation, providing concise summaries and tracking action items.",
+        ],
         featured: true,
       },
       {
-        period: "2022-24",
-        role: "Junior Developer",
+        periodStart: "2022",
+        periodEnd: "24",
+        role: "Storage Engineer Intern",
         company: "Widgets Inc",
-        description:
-          "React / Node. Shipped 14 features; owned the internal tooling stack AAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAowned the internal tooling stack AAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAowned the internal tooling stack AAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAowned the internal tooling stack AAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAowned the internal tooling stack AAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAowned the internal tooling stack AAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAs.",
+        description: [],
         featured: false,
       },
       {
-        period: "2020-22",
+        periodStart: "2020",
+        periodEnd: "22",
         role: "Help Desk Tech",
         company: "State University",
-        description:
+        description: [
           "Tier 1/2 support for 400 staff. Learned to write clearly and fast.",
+        ],
         featured: false,
       },
     ],
@@ -149,96 +234,18 @@ const ENGLISH_COPY: HomeDictionary = {
   },
   contact: {
     badge: "CONTACT",
-    title: "find me-",
+    title: "Contact me",
     labels: {
       email: "email",
-      github: "github",
-      mastodon: "mast.",
-      rss: "rss",
+      github: "github"
+      // mastodon: "mast.",
+      // rss: "rss",
     },
   },
   fullSkills: {
     title: "My Skill",
     subtitle: "- everything i reach for",
     slug: "/skills",
-    groups: [
-      {
-        title: "languages",
-        items: [
-          "JavaScript / TypeScript",
-          "Python",
-          "Go",
-          "Bash / Zsh",
-          "SQL",
-          "HTML / CSS",
-          "Lua",
-          "a little Rust",
-        ],
-      },
-      {
-        title: "frontend",
-        items: [
-          "React",
-          "Svelte",
-          "CSS Grid / Flex",
-          "Vite",
-          "Canvas + SVG",
-          "web components",
-          "Tailwind",
-          "design tokens",
-        ],
-      },
-      {
-        title: "backend / scripting",
-        items: [
-          "Node / Express",
-          "Flask",
-          "Postgres",
-          "Redis",
-          "REST & webhooks",
-          "cron & workers",
-          "scraping (Playwright)",
-          "a little Rails",
-        ],
-      },
-      {
-        title: "IT support",
-        items: [
-          "Active Directory",
-          "Windows Server",
-          "macOS / Jamf",
-          "Intune / MDM",
-          "Okta / SSO",
-          "networking & DNS",
-          "printers (ugh)",
-          "Zendesk / Jira",
-        ],
-      },
-      {
-        title: "devops & tools",
-        items: [
-          "Git & GitHub Actions",
-          "Docker",
-          "Nginx",
-          "Linux (Debian, Arch)",
-          "VS Code",
-          "Figma",
-          "Obsidian",
-          "tmux",
-        ],
-      },
-      {
-        title: "soft",
-        items: [
-          "ticket triage",
-          "writing clearly",
-          "pair debugging",
-          "patience",
-          "teaching users",
-          "knowing when to google",
-        ],
-      },
-    ],
   },
   footer: {
     end: "- end of page -",
@@ -272,33 +279,133 @@ const ENGLISH_COPY: HomeDictionary = {
   },
 };
 
-function toIndonesianTodo<T>(value: T, path = "home"): T {
-  if (typeof value === "string") {
-    return `TODO(ID): ${path}` as T;
-  }
-
-  if (Array.isArray(value)) {
-    return value.map((item, index) =>
-      toIndonesianTodo(item, `${path}.${index}`),
-    ) as T;
-  }
-
-  if (value && typeof value === "object") {
-    const result: Record<string, unknown> = {};
-    for (const [key, nested] of Object.entries(
-      value as Record<string, unknown>,
-    )) {
-      const nextPath = `${path}.${key}`;
-      result[key] = toIndonesianTodo(nested, nextPath);
-    }
-    return result as T;
-  }
-
-  return value;
-}
+const INDONESIAN_COPY: HomeDictionary = {
+  browserTitle: "your.name - lemari arsip",
+  nav: {
+    home: "/home",
+    blog: "/blog",
+    sandbox: "/sandbox",
+    about: "/about",
+    localeLabel: "bahasa",
+  },
+  hero: {
+    badge: "HALO",
+    introLine1: "Hanif Omar Kertapati,",
+    introLine2: ["Pengembang Perangkat Lunak", "Engineer Otomasi", "Dukungan IT"],
+    contactCta: "hubungi saya>",
+  },
+  now: {
+    badge: "SEKARANG - APR '26",
+    title: "sedang-",
+    bullets: [
+      "IT Support II @ Acme",
+      "merilis mainan JS kecil",
+      "terbuka untuk peran dev",
+    ],
+  },
+  work: {
+    badge: "PEKERJAAN - riwayat karir",
+    expandAll: "+ buka semua",
+    entries: [
+      {
+        periodStart: "2024",
+        periodEnd: "sekarang",
+        role: "IT Support II",
+        company: "Acme Corp",
+        description: [
+          "Mengotomasi pengiriman email internal menggunakan n8n via Puppeteer, mengurangi distribusi manual dan meningkatkan konsistensi.",
+          "Membangun CRM manajemen prospek end-to-end menggunakan Flutter dan Supabase, menyederhanakan pipeline penjualan dan UI/UX.",
+          "Mengembangkan target tracker Next.js untuk memantau KPI asuransi tahunan secara real-time.",
+          "Co-develop CRM HVC bersama Departemen Networking menggunakan Next.js untuk retensi klien VIP.",
+          "Mengelola dokumentasi rapat, menyediakan ringkasan singkat dan melacak action item.",
+        ],
+        featured: true,
+      },
+      {
+        periodStart: "2022",
+        periodEnd: "24",
+        role: "Junior Developer",
+        company: "Widgets Inc",
+        description: [],
+        featured: false,
+      },
+      {
+        periodStart: "2020",
+        periodEnd: "22",
+        role: "Help Desk Tech",
+        company: "State University",
+        description: [
+          "Dukungan Tier 1/2 untuk 400 staf. Belajar menulis dengan jelas dan cepat.",
+        ],
+        featured: false,
+      },
+    ],
+  },
+  projects: {
+    badge: "PROYEK - karya pilihan",
+    seeAll: "lihat semua ->",
+  },
+  sandbox: {
+    badge: "/SANDBOX - mainan",
+    items: ["scroll-phys", "css-clock", "midi-keys", "regex-golf"],
+    cta: "jelajahi ->",
+  },
+  skillsPreview: {
+    badge: "KEAHLIAN - tekan -> daftar lengkap",
+    title: "Kesaksian",
+    hint: "-> tekan untuk melihat daftar lengkap",
+    button: "klik masuk",
+  },
+  contact: {
+    badge: "KONTAK",
+    title: "temukan saya-",
+    labels: {
+      email: "email",
+      github: "github",
+      // mastodon: "mast.",
+      // rss: "rss",
+    },
+  },
+  fullSkills: {
+    title: "Keahlian Saya",
+    subtitle: "- semua yang saya gunakan",
+    slug: "/skills",
+  },
+  footer: {
+    end: "- akhir halaman -",
+    title: "hubungi saya",
+    subtitle: "membawa Anda kembali ke kartu kontak",
+  },
+  projectTranslations: {
+    "project.kanbanDesk": {
+      title: "Kanban Desk",
+      summary: "Papan taktil untuk melacak sprint dan kebiasaan pribadi.",
+    },
+    "project.cliNotebook": {
+      title: "CLI Notebook",
+      summary:
+        "Buku catatan terminal berbasis markdown dengan cuplikan dan akses cepat.",
+    },
+    "project.supportOps": {
+      title: "Support Ops Dashboard",
+      summary:
+        "Tampilan antrean dan SLA internal untuk penanganan dukungan dan insiden.",
+    },
+    "project.pixelToy": {
+      title: "Pixel Toy Lab",
+      summary:
+        "Sketsa browser eksperimental menggunakan canvas, timing, dan easing.",
+    },
+    "project.docsStarter": {
+      title: "Docs Starter",
+      summary:
+        "Template dokumentasi ringan yang disesuaikan untuk tim engineering kecil.",
+    },
+  },
+};
 
 export const HOME_COPY: Record<Locale, HomeDictionary> = {
   en: ENGLISH_COPY,
-  id: toIndonesianTodo<HomeDictionary>(ENGLISH_COPY),
+  id: INDONESIAN_COPY,
 };
 

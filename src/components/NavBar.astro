@@ -1,14 +1,19 @@
+---
+interface Props {
+  page?: "home" | "blog" | "sandbox" | "about";
+}
+const { page = "home" } = Astro.props;
+---
+
 <nav class="site-nav">
-  <a href="#" class="site-brand">hanifok.com</a>
+  <a href="/" class="site-brand">hanifok.com</a>
 
   <div class="site-nav-right">
     <div class="site-links">
-      <a href="#" class="site-link site-link-active" data-i18n-key="nav.home"
-        >/home</a
-      >
-      <a href="#" class="site-link" data-i18n-key="nav.blog">/blog</a>
-      <a href="#" class="site-link" data-i18n-key="nav.sandbox">/sandbox</a>
-      <a href="#" class="site-link" data-i18n-key="nav.about">/about</a>
+      <a href="/" class:list={["site-link", { "site-link-active": page === "home" }]} data-i18n-key="nav.home">/home</a>
+      <a href="/blog" class:list={["site-link", { "site-link-active": page === "blog" }]} data-i18n-key="nav.blog">/blog</a>
+      <a href="#" class:list={["site-link", { "site-link-active": page === "sandbox" }]} data-i18n-key="nav.sandbox">/sandbox</a>
+      <a href="#" class:list={["site-link", { "site-link-active": page === "about" }]} data-i18n-key="nav.about">/about</a>
     </div>
 
     <div class="locale-switcher" aria-label="language switcher">

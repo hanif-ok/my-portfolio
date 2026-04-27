@@ -20,8 +20,9 @@ const work = HOME_COPY.en.work;
         work.entries.map((entry, index) => (
           <div class="work-row" data-work-row>
             <p class="work-arrow" aria-hidden="true" data-work-arrow>&gt;</p>
-            <p class="work-period" data-i18n-key={`work.entries.${index}.period`}>
-              {entry.period}
+            <p class="work-period">
+              <span data-i18n-key={`work.entries.${index}.periodStart`}>{entry.periodStart}</span>
+              <span data-i18n-key={`work.entries.${index}.periodEnd`}>{entry.periodEnd}</span>
             </p>
             <p class="work-roleline">
               <span data-i18n-key={`work.entries.${index}.role`}>{entry.role}</span>
@@ -31,9 +32,13 @@ const work = HOME_COPY.en.work;
               </span>
             </p>
             <div class="work-desc-wrap">
-              <p class="work-desc" data-i18n-key={`work.entries.${index}.description`}>
-                {entry.description}
-              </p>
+              <ul class="work-desc">
+                {entry.description.map((bullet, bi) => (
+                  <li data-i18n-key={`work.entries.${index}.description.${bi}`}>
+                    {bullet}
+                  </li>
+                ))}
+              </ul>
             </div>
             <p class="work-star" aria-hidden={!entry.featured}>
               {entry.featured ? "*" : ""}

@@ -62,7 +62,7 @@ button {
 
 .section-two-up {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1.45fr 1fr;
   gap: 1.25rem;
 }
 
@@ -189,7 +189,7 @@ button {
   font-size: 0.625rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  padding: 0.2rem 0.75rem;
+  padding: 0.2rem 1.6rem;
 }
 
 .pin-dot {
@@ -218,6 +218,11 @@ button {
   align-items: start;
 }
 
+.hero-copy {
+  align-self: stretch;
+  overflow: hidden;
+}
+
 .hero-heading {
   margin: 0;
   color: var(--color-ink-primary);
@@ -225,6 +230,14 @@ button {
   font-size: clamp(2rem, 2vw + 1.1rem, 3.2rem);
   line-height: 1.08;
   font-weight: 400;
+}
+
+.hero-role {
+  transition: opacity 0.35s ease;
+}
+
+.hero-role.is-hidden {
+  opacity: 0;
 }
 
 .hero-lines {
@@ -370,6 +383,9 @@ button {
   color: var(--color-ink-muted);
   font-family: var(--font-mono);
   font-size: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.5;
 }
 
 .work-roleline {
@@ -409,6 +425,7 @@ button {
 
 .work-desc {
   margin: 0;
+  padding-left: 1.1rem;
   color: var(--color-ink-secondary);
   font-family: var(--font-script);
   font-size: 1.25rem;

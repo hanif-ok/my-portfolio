@@ -63,6 +63,9 @@ const { dictionaries } = Astro.props;
       const translated = readByPath(dictionary, key);
       if (typeof translated === "string") {
         node.textContent = translated;
+      } else if (Array.isArray(translated)) {
+        node.dataset.roles = JSON.stringify(translated);
+        node.dispatchEvent(new CustomEvent("roles-updated"));
       }
     });
 

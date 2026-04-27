@@ -1,5 +1,5 @@
 ---
-import { HOME_COPY } from "../i18n/home";
+import { HOME_COPY, SKILL_GROUPS } from "../i18n/home";
 
 const fullSkills = HOME_COPY.en.fullSkills;
 ---
@@ -18,19 +18,12 @@ const fullSkills = HOME_COPY.en.fullSkills;
 
     <div class="skills-groups">
       {
-        fullSkills.groups.map((group, groupIndex) => (
+        SKILL_GROUPS.map((group) => (
           <section class="skills-group">
-            <h3 data-i18n-key={`fullSkills.groups.${groupIndex}.title`}>
-              {group.title}
-            </h3>
+            <h3>{group.title}</h3>
             <div class="chip-wrap">
-              {group.items.map((item, itemIndex) => (
-                <span
-                  class="chip"
-                  data-i18n-key={`fullSkills.groups.${groupIndex}.items.${itemIndex}`}
-                >
-                  {item}
-                </span>
+              {group.items.map((item) => (
+                <span class="chip">{item}</span>
               ))}
             </div>
           </section>

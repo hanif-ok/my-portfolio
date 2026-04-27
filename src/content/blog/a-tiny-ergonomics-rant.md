@@ -1,11 +1,8 @@
 ---
-title: "A tiny ergonomics rant"
+title: "Coming SOon"
 pubDate: 2026-03-28
 readMinutes: 3
-excerpt: "Small keyboard and monitor changes that removed daily friction."
+excerpt: "Coming SOon."
 draft: false
 tags: ["workflow"]
 ---
-
-Placeholder entry used for home page listing.
-

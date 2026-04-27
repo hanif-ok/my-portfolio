@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 380" width="600" height="380">
+  <!-- background -->
+  <rect width="600" height="380" fill="#f5f2eb"/>
+
+  <!-- top bar -->
+  <rect x="0" y="0" width="600" height="40" fill="#1a1a1a"/>
+  <text x="16" y="26" font-family="monospace" font-size="13" fill="#f5f2eb">kanban-desk</text>
+  <circle cx="556" cy="20" r="7" fill="#444"/>
+  <circle cx="574" cy="20" r="7" fill="#444"/>
+  <circle cx="592" cy="20" r="7" fill="#444"/>
+
+  <!-- column: TODO -->
+  <rect x="16" y="56" width="172" height="308" rx="4" fill="#ede9e0" stroke="#1a1a1a" stroke-width="1.5"/>
+  <text x="28" y="76" font-family="monospace" font-size="11" fill="#888" letter-spacing="1">TODO</text>
+  <!-- card 1 -->
+  <rect x="24" y="86" width="156" height="52" rx="3" fill="#fff" stroke="#1a1a1a" stroke-width="1"/>
+  <text x="34" y="106" font-family="monospace" font-size="10" fill="#1a1a1a">Write API docs</text>
+  <rect x="34" y="114" width="40" height="8" rx="2" fill="#c8e6c9"/>
+  <text x="36" y="121" font-family="monospace" font-size="7" fill="#2e7d32">backend</text>
+  <!-- card 2 -->
+  <rect x="24" y="146" width="156" height="52" rx="3" fill="#fff" stroke="#1a1a1a" stroke-width="1"/>
+  <text x="34" y="166" font-family="monospace" font-size="10" fill="#1a1a1a">Fix login bug</text>
+  <rect x="34" y="174" width="32" height="8" rx="2" fill="#ffccbc"/>
+  <text x="36" y="181" font-family="monospace" font-size="7" fill="#bf360c">auth</text>
+  <!-- card 3 -->
+  <rect x="24" y="206" width="156" height="52" rx="3" fill="#fff" stroke="#1a1a1a" stroke-width="1"/>
+  <text x="34" y="226" font-family="monospace" font-size="10" fill="#1a1a1a">Setup CI pipeline</text>
+  <rect x="34" y="234" width="38" height="8" rx="2" fill="#e1bee7"/>
+  <text x="36" y="241" font-family="monospace" font-size="7" fill="#6a1b9a">devops</text>
+
+  <!-- column: IN PROGRESS -->
+  <rect x="204" y="56" width="172" height="308" rx="4" fill="#ede9e0" stroke="#1a1a1a" stroke-width="1.5"/>
+  <text x="216" y="76" font-family="monospace" font-size="11" fill="#888" letter-spacing="1">IN PROGRESS</text>
+  <!-- card 1 -->
+  <rect x="212" y="86" width="156" height="52" rx="3" fill="#fff" stroke="#1a1a1a" stroke-width="2"/>
+  <text x="222" y="106" font-family="monospace" font-size="10" fill="#1a1a1a">Build carousel UI</text>
+  <rect x="222" y="114" width="44" height="8" rx="2" fill="#bbdefb"/>
+  <text x="224" y="121" font-family="monospace" font-size="7" fill="#0d47a1">frontend</text>
+  <!-- card 2 -->
+  <rect x="212" y="146" width="156" height="52" rx="3" fill="#fff" stroke="#1a1a1a" stroke-width="2"/>
+  <text x="222" y="166" font-family="monospace" font-size="10" fill="#1a1a1a">Add i18n support</text>
+  <rect x="222" y="174" width="28" height="8" rx="2" fill="#bbdefb"/>
+  <text x="224" y="181" font-family="monospace" font-size="7" fill="#0d47a1">i18n</text>
+
+  <!-- column: DONE -->
+  <rect x="392" y="56" width="192" height="308" rx="4" fill="#ede9e0" stroke="#1a1a1a" stroke-width="1.5"/>
+  <text x="404" y="76" font-family="monospace" font-size="11" fill="#888" letter-spacing="1">DONE</text>
+  <!-- card 1 -->
+  <rect x="400" y="86" width="176" height="52" rx="3" fill="#f0f0f0" stroke="#bbb" stroke-width="1"/>
+  <text x="410" y="106" font-family="monospace" font-size="10" fill="#999" text-decoration="line-through">Project setup</text>
+  <text x="410" y="120" font-family="monospace" font-size="9" fill="#bbb">✓ completed</text>
+  <!-- card 2 -->
+  <rect x="400" y="146" width="176" height="52" rx="3" fill="#f0f0f0" stroke="#bbb" stroke-width="1"/>
+  <text x="410" y="166" font-family="monospace" font-size="10" fill="#999" text-decoration="line-through">Design system</text>
+  <text x="410" y="180" font-family="monospace" font-size="9" fill="#bbb">✓ completed</text>
+  <!-- card 3 -->
+  <rect x="400" y="206" width="176" height="52" rx="3" fill="#f0f0f0" stroke="#bbb" stroke-width="1"/>
+  <text x="410" y="226" font-family="monospace" font-size="10" fill="#999" text-decoration="line-through">Data persistence</text>
+  <text x="410" y="240" font-family="monospace" font-size="9" fill="#bbb">✓ completed</text>
+</svg>

@@ -14,7 +14,7 @@ const now = HOME_COPY.en.now;
       <div class="hero-copy">
         <h1 class="hero-heading">
           <span data-i18n-key="hero.introLine1">{hero.introLine1}</span><br />
-          <span data-i18n-key="hero.introLine2">{hero.introLine2}</span>
+          <span class="hero-role" data-i18n-key="hero.introLine2" data-roles={JSON.stringify(hero.introLine2)}>{hero.introLine2[0]}</span>
         </h1>
         <div class="hero-lines" aria-hidden="true">
           <span></span>
@@ -48,4 +48,38 @@ const now = HOME_COPY.en.now;
     </ul>
   </article>
 </section>
+
+<script>
+  const el = document.querySelector<HTMLElement>(".hero-role");
+  if (el) {
+    let roles: string[] = JSON.parse(el.dataset.roles ?? "[]");
+    let idx = 0;
+    let timer: ReturnType<typeof setTimeout>;
+
+    const FADE = 350;   // matches CSS transition duration
+    const HOLD = 2400;  // how long the word stays visible
+
+    const cycle = () => {
+      el.classList.add("is-hidden");
+      timer = setTimeout(() => {
+        idx = (idx + 1) % roles.length;
+        el.textContent = roles[idx];
+        el.classList.remove("is-hidden");
+        timer = setTimeout(cycle, HOLD + FADE);
+      }, FADE);
+    };
+
+    el.addEventListener("roles-updated", () => {
+      roles = JSON.parse(el.dataset.roles ?? "[]");
+      clearTimeout(timer);
+      idx = 0;
+      el.textContent = roles[0];
+      el.classList.remove("is-hidden");
+      timer = setTimeout(cycle, HOLD + FADE);
+    });
+
+    el.textContent = roles[0];
+    timer = setTimeout(cycle, HOLD + FADE);
+  }
+</script>
 

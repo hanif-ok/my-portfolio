@@ -25,7 +25,7 @@ function formatPostMeta(date: Date, readMinutes: number): string {
     <div class="blog-list">
       {
         posts.map((post) => (
-          <a class="blog-item" href="#">
+          <a class="blog-item" href={`/blog/${post.id}`}>
             <span class="blog-title">{post.data.title}</span>
             <span class="blog-meta">
               {formatPostMeta(post.data.pubDate, post.data.readMinutes)}
