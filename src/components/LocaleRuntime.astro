@@ -27,26 +27,8 @@ const { dictionaries } = Astro.props;
     return browserLocale.startsWith("id") ? "id" : "en";
   };
 
-  const applyProjectTranslations = (dictionary) => {
-    document.querySelectorAll("[data-project-title-id]").forEach((node) => {
-      const key = node.getAttribute("data-project-title-id");
-      if (!key) return;
-
-      const translated = dictionary.projectTranslations?.[key]?.title;
-      if (typeof translated === "string" && translated.length > 0) {
-        node.textContent = translated;
-      }
-    });
-
-    document.querySelectorAll("[data-project-summary-id]").forEach((node) => {
-      const key = node.getAttribute("data-project-summary-id");
-      if (!key) return;
-
-      const translated = dictionary.projectTranslations?.[key]?.summary;
-      if (typeof translated === "string" && translated.length > 0) {
-        node.textContent = translated;
-      }
-    });
+  const applyProjectTranslations = () => {
+    // No longer needed as projects are split into separate files per locale
   };
 
   const applyLocale = (locale) => {
@@ -69,7 +51,8 @@ const { dictionaries } = Astro.props;
       }
     });
 
-    applyProjectTranslations(dictionary);
+    applyProjectTranslations();
+    document.dispatchEvent(new CustomEvent("locale-changed", { detail: safeLocale }));
 
     document.querySelectorAll("[data-locale-switch]").forEach((button) => {
       const current = button.getAttribute("data-locale-switch");

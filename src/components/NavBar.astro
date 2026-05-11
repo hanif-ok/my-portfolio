@@ -12,8 +12,7 @@ const { page = "home" } = Astro.props;
     <div class="site-links">
       <a href="/" class:list={["site-link", { "site-link-active": page === "home" }]} data-i18n-key="nav.home">/home</a>
       <a href="/blog" class:list={["site-link", { "site-link-active": page === "blog" }]} data-i18n-key="nav.blog">/blog</a>
-      <a href="#" class:list={["site-link", { "site-link-active": page === "sandbox" }]} data-i18n-key="nav.sandbox">/sandbox</a>
-      <a href="#" class:list={["site-link", { "site-link-active": page === "about" }]} data-i18n-key="nav.about">/about</a>
+      <a href="#sandbox" class:list={["site-link", { "site-link-active": page === "sandbox" }]} data-i18n-key="nav.sandbox">/sandbox</a>
     </div>
 
     <div class="locale-switcher" aria-label="language switcher">

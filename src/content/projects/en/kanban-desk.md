@@ -6,7 +6,7 @@ summaryId: "project.kanbanDesk"
 year: 2026
 featured: true
 featuredOrder: 1
-image: /images/kanban-desk-preview.svg
+image: /images/kanban-desk-preview.gif
 href: "#"
 ---
 

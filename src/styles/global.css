@@ -8,9 +8,9 @@
   --color-blueprint-soft: #d6eafa;
   --color-status-dot: #e74c3c;
 
-  --font-hand: "Gochi Hand", "Comic Sans MS", cursive;
-  --font-script: "Caveat", "Times New Roman", serif;
-  --font-kalam: "Kalam", "Trebuchet MS", sans-serif;
+  --font-hand: "Syne", "Arial Black", sans-serif;
+  --font-script: "DM Sans", "Helvetica Neue", sans-serif;
+  --font-kalam: "Nunito", "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", "Consolas", monospace;
 
   --line-main: 1px solid var(--color-ink-primary);
@@ -77,7 +77,8 @@ button {
 
 .site-brand {
   font-family: var(--font-hand);
-  font-size: 1.125rem;
+  font-size: 1rem;
+  font-weight: 700;
   line-height: 1;
 }
 
@@ -192,23 +193,13 @@ button {
   padding: 0.2rem 1.6rem;
 }
 
-.pin-dot {
-  position: absolute;
-  top: -0.35rem;
-  right: 1rem;
-  border-radius: 999px;
-  width: 0.62rem;
-  height: 0.62rem;
-  background: var(--color-status-dot);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
-}
 
 .card-title {
   margin: 0 0 0.45rem;
   font-family: var(--font-hand);
-  font-size: 1.9rem;
+  font-size: 1.4rem;
   line-height: 1.05;
-  font-weight: 400;
+  font-weight: 700;
 }
 
 .hero-grid {
@@ -227,9 +218,9 @@ button {
   margin: 0;
   color: var(--color-ink-primary);
   font-family: var(--font-hand);
-  font-size: clamp(2rem, 2vw + 1.1rem, 3.2rem);
+  font-size: clamp(1.5rem, 2vw + 0.75rem, 2.5rem);
   line-height: 1.08;
-  font-weight: 400;
+  font-weight: 700;
 }
 
 .hero-role {
@@ -318,7 +309,7 @@ button {
 .bullet-list li {
   position: relative;
   font-family: var(--font-kalam);
-  font-size: 1.08rem;
+  font-size: 0.88rem;
   line-height: 1.35;
   padding-left: 0.95rem;
 }
@@ -392,8 +383,9 @@ button {
   margin: 0;
   color: var(--color-ink-primary);
   font-family: var(--font-script);
-  font-size: 1.65rem;
+  font-size: 1.1rem;
   line-height: 1.05;
+  font-weight: 500;
 }
 
 .work-roleline .work-sep,
@@ -428,9 +420,9 @@ button {
   padding-left: 1.1rem;
   color: var(--color-ink-secondary);
   font-family: var(--font-script);
-  font-size: 1.25rem;
-  line-height: 1.15;
-  max-height: 2.9rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  max-height: 4rem;
   overflow: hidden;
 }
 
@@ -443,7 +435,7 @@ button {
   margin: 0;
   color: var(--color-status-dot);
   font-family: var(--font-kalam);
-  font-size: 1.25rem;
+  font-size: 1rem;
   line-height: 1;
   justify-self: end;
 }
@@ -494,17 +486,17 @@ button {
 .project-content h3 {
   margin: 0;
   font-family: var(--font-script);
-  font-size: 2rem;
-  font-weight: 400;
+  font-size: 1.2rem;
+  font-weight: 500;
   line-height: 1;
 }
 
 .project-content p {
-  margin: 1rem 0 0;
+  margin: 0.6rem 0 0;
   color: var(--color-ink-secondary);
   font-family: var(--font-script);
-  font-size: 1.58rem;
-  line-height: 1.1;
+  font-size: 0.875rem;
+  line-height: 1.5;
 }
 
 .project-controls {
@@ -576,8 +568,9 @@ button {
 
 .blog-title {
   font-family: var(--font-script);
-  font-size: 1.95rem;
-  line-height: 1;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.3;
 }
 
 .blog-meta {
@@ -635,7 +628,7 @@ button {
   margin: 0;
   color: var(--color-blueprint);
   font-family: var(--font-script);
-  font-size: 1.1rem;
+  font-size: 0.85rem;
 }
 
 .contact-list {
@@ -660,8 +653,8 @@ button {
   border-bottom: 1px solid var(--color-blueprint);
   color: var(--color-ink-primary);
   font-family: var(--font-kalam);
-  font-size: 1.85rem;
-  line-height: 1;
+  font-size: 1rem;
+  line-height: 1.4;
 }
 
 .skills-head {
@@ -676,15 +669,16 @@ button {
 .skills-head h2 {
   margin: 0;
   font-family: var(--font-hand);
-  font-size: 2.2rem;
-  font-weight: 400;
+  font-size: 1.6rem;
+  font-weight: 700;
   line-height: 1;
 }
 
 .skills-head h2 small {
   color: var(--color-ink-muted);
   font-family: var(--font-script);
-  font-size: 1.35rem;
+  font-size: 0.95rem;
+  font-weight: 400;
 }
 
 .skills-slug {
@@ -705,8 +699,8 @@ button {
   display: inline-block;
   background: color-mix(in srgb, var(--color-blueprint-soft) 65%, white);
   font-family: var(--font-hand);
-  font-size: 1.5rem;
-  font-weight: 400;
+  font-size: 1.1rem;
+  font-weight: 700;
   line-height: 1;
   padding: 0.15rem 0.45rem;
 }
@@ -721,7 +715,7 @@ button {
   border: var(--line-main);
   background: var(--color-paper);
   font-family: var(--font-kalam);
-  font-size: 1rem;
+  font-size: 0.78rem;
   line-height: 1.2;
   padding: 0.16rem 0.45rem;
 }
@@ -757,7 +751,8 @@ button {
   margin: 0;
   color: var(--color-ink-primary);
   font-family: var(--font-hand);
-  font-size: 2.3rem;
+  font-size: 1.75rem;
+  font-weight: 700;
   line-height: 1;
 }
 
@@ -769,8 +764,8 @@ button {
   margin: 0;
   color: var(--color-ink-secondary);
   font-family: var(--font-script);
-  font-size: 1.25rem;
-  line-height: 1;
+  font-size: 0.9rem;
+  line-height: 1.4;
 }
 
 .empty-state {
@@ -831,9 +826,56 @@ button {
     justify-items: start;
   }
 
-  .project-slide,
-  .work-row {
+  .project-slide {
     grid-template-columns: 1fr;
+  }
+
+  .work-row {
+    grid-template-columns: 1.2rem 1fr auto;
+    column-gap: 0.5rem;
+    row-gap: 0.2rem;
+    min-height: auto;
+    align-items: start;
+  }
+
+  .work-arrow {
+    grid-column: 1;
+    grid-row: 1;
+    padding-top: 0.15rem;
+  }
+
+  .work-roleline {
+    grid-column: 2;
+    grid-row: 1;
+    font-size: 0.9rem;
+  }
+
+  .work-period {
+    grid-column: 2;
+    grid-row: 2;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 0.1rem;
+  }
+
+  .work-period span:first-child::after {
+    content: "\00a0\2013\00a0";
+  }
+
+  .work-desc-wrap {
+    grid-column: 2 / -1;
+    grid-row: 3;
+    margin-top: 0.25rem;
+  }
+
+  .work-desc {
+    font-size: 0.875rem;
+  }
+
+  .work-star {
+    grid-column: 3;
+    grid-row: 1;
+    justify-self: end;
   }
 
   .project-carousel-body {

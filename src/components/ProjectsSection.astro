@@ -24,6 +24,7 @@ const labels = HOME_COPY.en.projects;
               <article
                 class={`project-slide ${index === 0 ? "is-active" : ""}`}
                 data-project-slide
+                data-locale={project.data.lang || 'en'}
               >
                 <div class="project-media">
                   {project.data.image ? (
@@ -35,8 +36,8 @@ const labels = HOME_COPY.en.projects;
                 </div>
 
                 <div class="project-content">
-                  <h3 data-project-title-id={project.data.titleId}>{project.data.title}</h3>
-                  <p data-project-summary-id={project.data.summaryId}>
+                  <h3>{project.data.title}</h3>
+                  <p>
                     {project.data.summary}
                   </p>
                 </div>
@@ -76,11 +77,6 @@ const labels = HOME_COPY.en.projects;
       )
     }
 
-    <div class="row-cta">
-      <a href="#" class="row-link-red" data-i18n-key="projects.seeAll"
-        >{labels.seeAll}</a
-      >
-    </div>
   </article>
 </section>
 
@@ -89,47 +85,86 @@ const labels = HOME_COPY.en.projects;
     const root = document.querySelector("[data-project-carousel]");
     if (!root) return;
 
-    const slides = Array.from(root.querySelectorAll("[data-project-slide]"));
-    const dots = Array.from(root.querySelectorAll("[data-project-dot]"));
     const count = root.querySelector("[data-project-count]");
     const prev = root.querySelector("[data-project-prev]");
     const next = root.querySelector("[data-project-next]");
 
-    if (slides.length === 0 || !count || !prev || !next) return;
-
     let active = 0;
-    const total = slides.length;
+    let filteredSlides = [];
 
-    const render = () => {
-      slides.forEach((slide, index) => {
-        slide.classList.toggle("is-active", index === active);
+    const updateAndRender = () => {
+      const locale = document.body.dataset.locale || 'en';
+      const allSlides = Array.from(root.querySelectorAll("[data-project-slide]"));
+      
+      // Filter slides by locale
+      filteredSlides = allSlides.filter(slide => slide.dataset.locale === locale);
+      
+      // Hide all slides first, then show only filtered ones
+      allSlides.forEach(s => {
+        s.style.display = 'none';
+        s.classList.remove("is-active");
       });
+      
+      filteredSlides.forEach(s => s.style.display = '');
 
-      dots.forEach((dot, index) => {
-        dot.classList.toggle("is-active", index === active);
-      });
+      const dots = Array.from(root.querySelectorAll("[data-project-dot]"));
+      
+      if (filteredSlides.length === 0) {
+        if (count) count.textContent = "00 / 00";
+        dots.forEach(d => d.style.display = 'none');
+        return;
+      }
 
-      count.textContent = `${String(active + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}`;
+      // Adjust active index if it's out of bounds for the new set
+      if (active >= filteredSlides.length) active = 0;
+
+      dots.forEach(d => d.style.display = '');
+      
+      const render = () => {
+        filteredSlides.forEach((slide, index) => {
+          slide.classList.toggle("is-active", index === active);
+        });
+
+        dots.forEach((dot, index) => {
+          dot.classList.toggle("is-active", index === active && index < filteredSlides.length);
+          if (index >= filteredSlides.length) dot.style.display = 'none';
+        });
+
+        if (count) {
+          count.textContent = `${String(active + 1).padStart(2, "0")} / ${String(filteredSlides.length).padStart(2, "0")}`;
+        }
+      };
+
+      render();
     };
 
-    prev.addEventListener("click", () => {
-      active = active === 0 ? total - 1 : active - 1;
-      render();
+    if (prev) {
+      prev.onclick = () => {
+        active = active === 0 ? filteredSlides.length - 1 : active - 1;
+        updateAndRender();
+      };
+    }
+
+    if (next) {
+      next.onclick = () => {
+        active = active === filteredSlides.length - 1 ? 0 : active + 1;
+        updateAndRender();
+      };
+    }
+
+    root.addEventListener("click", (e) => {
+      const dot = e.target.closest("[data-project-dot]");
+      if (dot) {
+        const index = parseInt(dot.getAttribute("data-project-dot"));
+        if (index >= 0 && index < filteredSlides.length) {
+          active = index;
+          updateAndRender();
+        }
+      }
     });
 
-    next.addEventListener("click", () => {
-      active = active === total - 1 ? 0 : active + 1;
-      render();
-    });
-
-    dots.forEach((dot, index) => {
-      dot.addEventListener("click", () => {
-        active = index;
-        render();
-      });
-    });
-
-    render();
+    document.addEventListener("locale-changed", updateAndRender);
+    updateAndRender();
   })();
 </script>
 

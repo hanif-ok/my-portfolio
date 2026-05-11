@@ -36,6 +36,19 @@ export interface HomeDictionary {
     badge: string;
     seeAll: string;
   };
+  certifications: {
+    badge: string;
+    entries: Array<{
+      name: string;
+      fullName: string;
+      issuer: string;
+      year: number;
+      logo: string;
+      description: string;
+      credentialId?: string;
+      link?: string;
+    }>;
+  };
   sandbox: {
     badge: string;
     items: string[];
@@ -48,14 +61,20 @@ export interface HomeDictionary {
     button: string;
   };
   contact: {
+    badge: "CONTACT",
+    title: "Contact me",
+    labels: {
+      email: "email",
+      github: "github",
+      linkedin: "linkedin",
+      // mastodon: "mast.",
+      // rss: "rss",
+    },
+  };
+  about: {
     badge: string;
     title: string;
-    labels: {
-      email: string;
-      github: string;
-      // mastodon: string;
-      // rss: string;
-    };
+    description: string;
   };
   fullSkills: {
     title: string;
@@ -67,13 +86,6 @@ export interface HomeDictionary {
     title: string;
     subtitle: string;
   };
-  projectTranslations: Record<
-    string,
-    {
-      title: string;
-      summary: string;
-    }
-  >;
 }
 
 export const SKILL_GROUPS: Array<{ title: string; items: string[] }> = [
@@ -83,24 +95,15 @@ export const SKILL_GROUPS: Array<{ title: string; items: string[] }> = [
       "JavaScript / TypeScript",
       "Python",
       "Go",
-      "Bash / Zsh",
       "SQL",
       "HTML / CSS",
-      "Lua",
-      "a little Rust",
     ],
   },
   {
     title: "frontend",
     items: [
       "React",
-      "Svelte",
-      "CSS Grid / Flex",
       "Vite",
-      "Canvas + SVG",
-      "web components",
-      "Tailwind",
-      "design tokens",
     ],
   },
   {
@@ -109,11 +112,7 @@ export const SKILL_GROUPS: Array<{ title: string; items: string[] }> = [
       "Node / Express",
       "Flask",
       "Postgres",
-      "Redis",
-      "REST & webhooks",
-      "cron & workers",
       "scraping (Playwright)",
-      "a little Rails",
     ],
   },
   {
@@ -156,7 +155,7 @@ export const SKILL_GROUPS: Array<{ title: string; items: string[] }> = [
 ];
 
 const ENGLISH_COPY: HomeDictionary = {
-  browserTitle: "your.name - a filing cabinet",
+  browserTitle: "Hanif Omar Kertapati",
   nav: {
     home: "/home",
     blog: "/blog",
@@ -201,18 +200,11 @@ const ENGLISH_COPY: HomeDictionary = {
         periodStart: "2022",
         periodEnd: "24",
         role: "Storage Engineer Intern",
-        company: "Widgets Inc",
-        description: [],
-        featured: false,
-      },
-      {
-        periodStart: "2020",
-        periodEnd: "22",
-        role: "Help Desk Tech",
-        company: "State University",
+        company: "PT Surya Citra Media, Tbk",
         description: [
-          "Tier 1/2 support for 400 staff. Learned to write clearly and fast.",
-        ],
+          "Implemented a dashboard monitoring system for various database softwares using grafana and prometheus as a basis",
+          "Automated monthly data entry tasks using selenium and AHK, reducing entry time by 20%",
+        "Wrote documentations for systems, reducing redundancy in repeatable installations"],
         featured: false,
       },
     ],
@@ -220,6 +212,29 @@ const ENGLISH_COPY: HomeDictionary = {
   projects: {
     badge: "PROJECTS - featured work",
     seeAll: "see all ->",
+  },
+  certifications: {
+    badge: "/CERTS - verified credentials",
+    entries: [
+      {
+        name: "Sample Cert A",
+        fullName: "Sample Certification A — Long Form",
+        issuer: "Issuer Name",
+        year: 2024,
+        logo: "",
+        description:
+          "Placeholder description for the first sample certification. Replace with real summary.",
+      },
+      {
+        name: "Sample Cert B",
+        fullName: "Sample Certification B — Long Form",
+        issuer: "Issuer Name",
+        year: 2023,
+        logo: "",
+        description:
+          "Placeholder description for the second sample certification. Replace with real summary.",
+      },
+    ],
   },
   sandbox: {
     badge: "/SANDBOX - toys",
@@ -237,10 +252,16 @@ const ENGLISH_COPY: HomeDictionary = {
     title: "Contact me",
     labels: {
       email: "email",
-      github: "github"
+      github: "github",
+      linkedin: "linkedin",
       // mastodon: "mast.",
       // rss: "rss",
     },
+  },
+  about: {
+    badge: "ABOUT",
+    title: "About Me",
+    description: "I am a software developer and automation engineer with a passion for creating efficient tools and solving complex problems. I enjoy bridging the gap between IT support and software engineering to build reliable systems.",
   },
   fullSkills: {
     title: "My Skill",
@@ -252,35 +273,10 @@ const ENGLISH_COPY: HomeDictionary = {
     title: "contact me",
     subtitle: "takes you back up to the contact card",
   },
-  projectTranslations: {
-    "project.kanbanDesk": {
-      title: "Kanban Desk",
-      summary: "A tactile board for tracking personal sprints and habits.",
-    },
-    "project.cliNotebook": {
-      title: "CLI Notebook",
-      summary:
-        "A markdown-first terminal notebook with snippets and quick recall.",
-    },
-    "project.supportOps": {
-      title: "Support Ops Dashboard",
-      summary: "Internal queue and SLA view for support and incident handling.",
-    },
-    "project.pixelToy": {
-      title: "Pixel Toy Lab",
-      summary:
-        "Experimental browser sketches using canvas, timing, and easing.",
-    },
-    "project.docsStarter": {
-      title: "Docs Starter",
-      summary:
-        "A lightweight docs template tuned for small engineering teams.",
-    },
-  },
 };
 
 const INDONESIAN_COPY: HomeDictionary = {
-  browserTitle: "your.name - lemari arsip",
+  browserTitle: "Hanif Omar Kertapati",
   nav: {
     home: "/home",
     blog: "/blog",
@@ -291,16 +287,16 @@ const INDONESIAN_COPY: HomeDictionary = {
   hero: {
     badge: "HALO",
     introLine1: "Hanif Omar Kertapati,",
-    introLine2: ["Pengembang Perangkat Lunak", "Engineer Otomasi", "Dukungan IT"],
+    introLine2: ["Software Developer", "Automation Engineer", "IT Support"],
     contactCta: "hubungi saya>",
   },
   now: {
     badge: "SEKARANG - APR '26",
     title: "sedang-",
     bullets: [
-      "IT Support II @ Acme",
-      "merilis mainan JS kecil",
-      "terbuka untuk peran dev",
+      "Mencari Pengalaman Baru",
+      "Belajar sini dan sana",
+      "???",
     ],
   },
   work: {
@@ -308,35 +304,27 @@ const INDONESIAN_COPY: HomeDictionary = {
     expandAll: "+ buka semua",
     entries: [
       {
-        periodStart: "2024",
-        periodEnd: "sekarang",
-        role: "IT Support II",
-        company: "Acme Corp",
+        periodStart: "Oct 2025",
+        periodEnd: "Apr 2026",
+        role: "IT Support | Software Engineer Intern",
+        company: "PT Asuransi Kredit Indonesia",
         description: [
-          "Mengotomasi pengiriman email internal menggunakan n8n via Puppeteer, mengurangi distribusi manual dan meningkatkan konsistensi.",
-          "Membangun CRM manajemen prospek end-to-end menggunakan Flutter dan Supabase, menyederhanakan pipeline penjualan dan UI/UX.",
-          "Mengembangkan target tracker Next.js untuk memantau KPI asuransi tahunan secara real-time.",
-          "Co-develop CRM HVC bersama Departemen Networking menggunakan Next.js untuk retensi klien VIP.",
-          "Mengelola dokumentasi rapat, menyediakan ringkasan singkat dan melacak action item.",
-        ],
+"Mengotomatisasi pengiriman 100+ memo internal berulang menggunakan n8n dan Puppeteer, menghemat 15% waktu administratif mingguan",
+"Membangun CRM Manajemen Prospek menggunakan Flutter dan Supabase, menyederhanakan alur penjualan dari penangkapan prospek hingga konversi",
+"Mengembangkan dasbor KPI real-time di Next.js untuk memantau target asuransi tahunan, memungkinkan manajemen memantau kinerja departemen secara sekilas",
+"Ikut mengembangkan CRM retensi klien VIP bersama Departemen Networking menggunakan Next.js, memusatkan data klien bernilai tinggi dan alur kerja tindak lanjut",
+"Bertanggung jawab atas dokumentasi rapat lintas tim, merangkum diskusi menjadi ringkasan yang dapat ditindaklanjuti dan memastikan tindak lanjut atas hasil keputusan utama"        ],
         featured: true,
       },
       {
         periodStart: "2022",
         periodEnd: "24",
-        role: "Junior Developer",
-        company: "Widgets Inc",
-        description: [],
-        featured: false,
-      },
-      {
-        periodStart: "2020",
-        periodEnd: "22",
-        role: "Help Desk Tech",
-        company: "State University",
+        role: "Storage Engineer Intern",
+        company: "PT Surya Citra Media, Tbk",
         description: [
-          "Dukungan Tier 1/2 untuk 400 staf. Belajar menulis dengan jelas dan cepat.",
-        ],
+"Menggunakan dasbor pemantauan basis data terpusat menggunakan Grafana dan Prometheus untuk visibilitas real-time di berbagai platform",
+"Mengotomatisasi proses entri data bulanan menggunakan Selenium dan AHK, memangkas waktu entri manual sebesar 20% dan mengurangi kesalahan manusia",
+"Membuat dokumentasi teknis terstandarisasi untuk instalasi berulang, memangkas waktu penyiapan dari 2 jam menjadi 30 menit per pemasangan"],
         featured: false,
       },
     ],
@@ -344,6 +332,29 @@ const INDONESIAN_COPY: HomeDictionary = {
   projects: {
     badge: "PROYEK - karya pilihan",
     seeAll: "lihat semua ->",
+  },
+  certifications: {
+    badge: "/CERTS - kredensial terverifikasi",
+    entries: [
+      {
+        name: "Sample Cert A",
+        fullName: "Sample Certification A — Long Form",
+        issuer: "Issuer Name",
+        year: 2024,
+        logo: "",
+        description:
+          "Deskripsi placeholder untuk sertifikasi sampel pertama. Ganti dengan ringkasan asli.",
+      },
+      {
+        name: "Sample Cert B",
+        fullName: "Sample Certification B — Long Form",
+        issuer: "Issuer Name",
+        year: 2023,
+        logo: "",
+        description:
+          "Deskripsi placeholder untuk sertifikasi sampel kedua. Ganti dengan ringkasan asli.",
+      },
+    ],
   },
   sandbox: {
     badge: "/SANDBOX - mainan",
@@ -362,9 +373,15 @@ const INDONESIAN_COPY: HomeDictionary = {
     labels: {
       email: "email",
       github: "github",
+      linkedin: "linkedin",
       // mastodon: "mast.",
       // rss: "rss",
     },
+  },
+  about: {
+    badge: "TENTANG",
+    title: "Tentang Saya",
+    description: "Saya adalah seorang pengembang perangkat lunak dan insinyur otomasi yang memiliki semangat untuk membuat alat yang efisien dan menyelesaikan masalah kompleks. Saya senang menjembatani celah antara dukungan IT dan rekayasa perangkat lunak untuk membangun sistem yang handal.",
   },
   fullSkills: {
     title: "Keahlian Saya",
@@ -375,32 +392,6 @@ const INDONESIAN_COPY: HomeDictionary = {
     end: "- akhir halaman -",
     title: "hubungi saya",
     subtitle: "membawa Anda kembali ke kartu kontak",
-  },
-  projectTranslations: {
-    "project.kanbanDesk": {
-      title: "Kanban Desk",
-      summary: "Papan taktil untuk melacak sprint dan kebiasaan pribadi.",
-    },
-    "project.cliNotebook": {
-      title: "CLI Notebook",
-      summary:
-        "Buku catatan terminal berbasis markdown dengan cuplikan dan akses cepat.",
-    },
-    "project.supportOps": {
-      title: "Support Ops Dashboard",
-      summary:
-        "Tampilan antrean dan SLA internal untuk penanganan dukungan dan insiden.",
-    },
-    "project.pixelToy": {
-      title: "Pixel Toy Lab",
-      summary:
-        "Sketsa browser eksperimental menggunakan canvas, timing, dan easing.",
-    },
-    "project.docsStarter": {
-      title: "Docs Starter",
-      summary:
-        "Template dokumentasi ringan yang disesuaikan untuk tim engineering kecil.",
-    },
   },
 };
 

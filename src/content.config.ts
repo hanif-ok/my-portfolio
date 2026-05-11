@@ -17,14 +17,14 @@ const projectsCollection = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/projects" }),
   schema: z.object({
     title: z.string(),
-    titleId: z.string(),
     summary: z.string(),
-    summaryId: z.string(),
     year: z.number().int(),
     featured: z.boolean().default(true),
     featuredOrder: z.number().int().optional(),
     image: z.string().optional(),
     href: z.string().optional(),
+    lang: z.enum(["en", "id"]).optional(),
+    techStack: z.array(z.string()).optional(),
   }),
 });
 

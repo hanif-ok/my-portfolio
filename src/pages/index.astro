@@ -9,7 +9,6 @@ import LocaleRuntime from "../components/LocaleRuntime.astro";
 import NavBar from "../components/NavBar.astro";
 import ProjectsSection from "../components/ProjectsSection.astro";
 import SandboxSection from "../components/SandboxSection.astro";
-import SkillsPreviewSection from "../components/SkillsPreviewSection.astro";
 import WorkSection from "../components/WorkSection.astro";
 import { HOME_COPY } from "../i18n/home";
 import BaseLayout from "../layouts/BaseLayout.astro";
@@ -39,18 +38,11 @@ const featuredProjects = (
       <WorkSection />
       <ProjectsSection projects={featuredProjects} />
 
-      <div class="section-two-up">
-        <BlogSection posts={latestPosts} totalCount={allBlogPosts.length} />
-        <SandboxSection />
-      </div>
+      <BlogSection posts={latestPosts} totalCount={allBlogPosts.length} />
 
-      <div class="section-two-up">
-        <SkillsPreviewSection />
-        <ContactSection />
-      </div>
+      <ContactSection />
 
       <FullSkillsSection />
-      <FooterCta />
     </div>
   </main>
 
