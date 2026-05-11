@@ -9,6 +9,7 @@ featured: true
 featuredOrder: 2
 image: "/images/project-stacks/leadcrm-stack.svg"
 href: "#"
+techStack: ["Flutter", "Supabase", "Firebase"]
 ---
 
 Featured project placeholder.

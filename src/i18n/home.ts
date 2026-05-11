@@ -93,6 +93,7 @@ export const SKILL_GROUPS: Array<{ title: string; items: string[] }> = [
     title: "languages",
     items: [
       "JavaScript / TypeScript",
+      "Dart",
       "Python",
       "Go",
       "SQL",
@@ -373,4 +374,3 @@ export const HOME_COPY: Record<Locale, HomeDictionary> = {
   en: ENGLISH_COPY,
   id: INDONESIAN_COPY,
 };
-

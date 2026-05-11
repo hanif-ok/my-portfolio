@@ -1,4 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="HOK logo">
-  <rect x="2" y="2" width="60" height="60" rx="14" fill="#111827" />
-  <path d="M16 18h6v10h8V18h6v28h-6V34h-8v12h-6V18Zm25 0h6v11.6L57.2 18H64L52.4 31.5 64 46h-7l-10-12.5V46h-6V18Z" fill="#f9fafb"/>
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="#111827"/>
+  <path d="M6 15h5v13h6V15h5v34h-5V33h-6v16H6V15Z" fill="#f9fafb"/>
+  <path fill-rule="evenodd" d="M31 20a12 12 0 1 1 0 24 12 12 0 0 1 0-24Zm0 6a6 6 0 1 0 0 12 6 6 0 0 0 0-12Z" fill="#f9fafb"/>
+  <path d="M41 15h5v14l9-14h6l-10 15 10 19h-6l-9-16v16h-5V15Z" fill="#f9fafb"/>
 </svg>
