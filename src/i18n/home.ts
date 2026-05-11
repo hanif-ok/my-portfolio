@@ -116,42 +116,16 @@ export const SKILL_GROUPS: Array<{ title: string; items: string[] }> = [
     ],
   },
   {
-    title: "IT support",
-    items: [
-      "Active Directory",
-      "Windows Server",
-      "macOS / Jamf",
-      "Intune / MDM",
-      "Okta / SSO",
-      "networking & DNS",
-      "printers (ugh)",
-      "Zendesk / Jira",
-    ],
-  },
-  {
     title: "devops & tools",
     items: [
       "Git & GitHub Actions",
       "Docker",
       "Nginx",
       "Linux (Debian, Arch)",
-      "VS Code",
       "Figma",
-      "Obsidian",
-      "tmux",
     ],
   },
-  {
-    title: "soft",
-    items: [
-      "ticket triage",
-      "writing clearly",
-      "pair debugging",
-      "patience",
-      "teaching users",
-      "knowing when to google",
-    ],
-  },
+
 ];
 
 const ENGLISH_COPY: HomeDictionary = {
