@@ -3,6 +3,7 @@ import { HOME_COPY } from "../i18n/home";
 
 const hero = HOME_COPY.en.hero;
 const now = HOME_COPY.en.now;
+const portraitSrc = `${import.meta.env.BASE_URL}images/self-portrait.jpg`;
 ---
 
 <section class="section-two-up">
@@ -26,7 +27,7 @@ const now = HOME_COPY.en.now;
         <div class="hero-avatar">
           <img
             class="hero-avatar-image"
-            src="/images/self-portrait.jpg"
+            src={portraitSrc}
             alt="Profile portrait"
             loading="eager"
             decoding="async"

@@ -3,15 +3,18 @@ interface Props {
   page?: "home" | "blog" | "sandbox" | "about";
 }
 const { page = "home" } = Astro.props;
+const withBase = (route = "") => `${import.meta.env.BASE_URL}${route.replace(/^\/+/, "")}`;
+const homeHref = withBase();
+const blogHref = withBase("blog");
 ---
 
 <nav class="site-nav">
-  <a href="/" class="site-brand">hanifok.com</a>
+  <a href={homeHref} class="site-brand">hanifok.com</a>
 
   <div class="site-nav-right">
     <div class="site-links">
-      <a href="/" class:list={["site-link", { "site-link-active": page === "home" }]} data-i18n-key="nav.home">/home</a>
-      <a href="/blog" class:list={["site-link", { "site-link-active": page === "blog" }]} data-i18n-key="nav.blog">/blog</a>
+      <a href={homeHref} class:list={["site-link", { "site-link-active": page === "home" }]} data-i18n-key="nav.home">/home</a>
+      <a href={blogHref} class:list={["site-link", { "site-link-active": page === "blog" }]} data-i18n-key="nav.blog">/blog</a>
       <a href="#sandbox" class:list={["site-link", { "site-link-active": page === "sandbox" }]} data-i18n-key="nav.sandbox">/sandbox</a>
     </div>
 
@@ -25,4 +28,3 @@ const { page = "home" } = Astro.props;
     </div>
   </div>
 </nav>
-

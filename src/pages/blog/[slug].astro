@@ -19,6 +19,7 @@ const formatted = post.data.pubDate.toLocaleDateString("en-US", {
   day: "numeric",
   year: "numeric",
 });
+const blogHref = `${import.meta.env.BASE_URL}blog`;
 ---
 
 <BaseLayout title={`${post.data.title} — feed`}>
@@ -26,7 +27,7 @@ const formatted = post.data.pubDate.toLocaleDateString("en-US", {
   <main class="portfolio-page">
     <div class="content-flow">
 
-      <a href="/blog" class="back-link">← back to feed</a>
+      <a href={blogHref} class="back-link">← back to feed</a>
 
       <article>
         <div class="paper-card tilt-positive is-visible">
@@ -50,7 +51,7 @@ const formatted = post.data.pubDate.toLocaleDateString("en-US", {
       </article>
 
       <div class="article-footer">
-        <a href="/blog" class="read-btn">← back to feed</a>
+        <a href={blogHref} class="read-btn">← back to feed</a>
       </div>
 
     </div>

@@ -8,6 +8,11 @@ interface Props {
 
 const { projects } = Astro.props;
 const labels = HOME_COPY.en.projects;
+const resolveAssetPath = (src?: string) => {
+  if (!src) return undefined;
+  if (/^(https?:)?\/\//.test(src)) return src;
+  return `${import.meta.env.BASE_URL}${src.replace(/^\/+/, "")}`;
+};
 ---
 
 <section>
@@ -28,7 +33,7 @@ const labels = HOME_COPY.en.projects;
               >
                 <div class="project-media">
                   {project.data.image ? (
-                    <img src={project.data.image} alt={project.data.title} loading="lazy" />
+                    <img src={resolveAssetPath(project.data.image)} alt={project.data.title} loading="lazy" />
                   ) : (
                     <div class="project-placeholder" aria-hidden="true"></div>
                   )}
@@ -199,4 +204,3 @@ const labels = HOME_COPY.en.projects;
     updateAndRender();
   })();
 </script>
-

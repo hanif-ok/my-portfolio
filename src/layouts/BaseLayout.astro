@@ -6,6 +6,7 @@ interface Props {
 }
 
 const { title = "my-portfolio" } = Astro.props;
+const withBase = (assetPath: string) => `${import.meta.env.BASE_URL}${assetPath.replace(/^\/+/, "")}`;
 ---
 
 <!doctype html>
@@ -14,8 +15,8 @@ const { title = "my-portfolio" } = Astro.props;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" type="image/svg+xml" href={withBase("favicon.svg")} />
+    <link rel="icon" href={withBase("favicon.ico")} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -28,4 +29,3 @@ const { title = "my-portfolio" } = Astro.props;
     <slot />
   </body>
 </html>
-
