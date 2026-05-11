@@ -40,6 +40,13 @@ const labels = HOME_COPY.en.projects;
                   <p>
                     {project.data.summary}
                   </p>
+                  {project.data.techStack && (
+                    <div class="project-tech-stack">
+                      {project.data.techStack.map((tech) => (
+                        <span class="tech-chip">{tech}</span>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </article>
             ))}
@@ -79,6 +86,31 @@ const labels = HOME_COPY.en.projects;
 
   </article>
 </section>
+
+<style>
+  .project-tech-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .tech-chip {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 9999px;
+    background-color: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: inherit;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  :global(.dark) .tech-chip {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+</style>
 
 <script is:inline>
   (() => {

@@ -61,8 +61,8 @@ export interface HomeDictionary {
     button: string;
   };
   contact: {
-    badge: "CONTACT",
-    title: "Contact me",
+    badge: string,
+    title: string,
     labels: {
       email: "email",
       github: "github",

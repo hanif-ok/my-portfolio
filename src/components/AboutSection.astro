@@ -1,0 +1,15 @@
+---
+import { HOME_COPY } from "../i18n/home";
+
+const about = HOME_COPY.en.about;
+---
+
+<section>
+  <article class="paper-card tilt-positive">
+    <span class="card-label" data-i18n-key="about.badge">{about.badge}</span>
+    <span class="pin-dot" aria-hidden="true"></span>
+
+    <h2 class="card-title" data-i18n-key="about.title">{about.title}</h2>
+    <p class="about-copy" data-i18n-key="about.description">{about.description}</p>
+  </article>
+</section>

@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import AboutSection from "../components/AboutSection.astro";
 import BlogSection from "../components/BlogSection.astro";
 import ContactSection from "../components/ContactSection.astro";
 import FooterCta from "../components/FooterCta.astro";
@@ -35,6 +36,7 @@ const featuredProjects = (
   <main class="portfolio-page">
     <div class="content-flow">
       <HeroNowRow />
+      <AboutSection />
       <WorkSection />
       <ProjectsSection projects={featuredProjects} />
 

@@ -23,9 +23,14 @@ const now = HOME_COPY.en.now;
       </div>
 
       <div class="hero-avatar-wrap">
-        <div class="hero-avatar" aria-hidden="true">
-          <span class="avatar-head"></span>
-          <span class="avatar-body"></span>
+        <div class="hero-avatar">
+          <img
+            class="hero-avatar-image"
+            src="/images/self-portrait.jpg"
+            alt="Profile portrait"
+            loading="eager"
+            decoding="async"
+          />
         </div>
         <a href="#contact" class="hero-contact" data-i18n-key="hero.contactCta"
           >{hero.contactCta}</a
@@ -82,4 +87,3 @@ const now = HOME_COPY.en.now;
     timer = setTimeout(cycle, HOLD + FADE);
   }
 </script>
-

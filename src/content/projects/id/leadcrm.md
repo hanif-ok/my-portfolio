@@ -1,11 +1,13 @@
 ---
+lang: "id"
 title: "Leadx"
 titleId: "project.leadx"
-summary: "A markdown-first terminal notebook with snippets and quick recall."
+summary: "CRM Leads Management dengan approach mobile first, dibangun melalui beberapa iterasi"
 summaryId: "project.cliNotebook"
 year: 2025
 featured: true
 featuredOrder: 2
+image: "/images/project-stacks/leadcrm-stack.svg"
 href: "#"
 ---
 
