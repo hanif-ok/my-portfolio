@@ -5,6 +5,10 @@ on:
   # Using a different branch name? Replace `main` with your branch’s name
   push:
     branches: [ master, main ]
+  # Rebuild on the 1st of each month so the build-stamped "now" badge in the
+  # hero stays current even during a stretch with no pushes.
+  schedule:
+    - cron: '0 3 1 * *'
   # Allows you to run this workflow manually from the Actions tab on GitHub.
   workflow_dispatch:
 

@@ -75,16 +75,21 @@ const portraitSrc = `${import.meta.env.BASE_URL}images/self-portrait.jpg`;
       }, FADE);
     };
 
-    el.addEventListener("roles-updated", () => {
-      roles = JSON.parse(el.dataset.roles ?? "[]");
+    // A single title is a deliberate choice, not a one-item carousel — cycling
+    // it would just fade the same words in and out forever.
+    const start = () => {
       clearTimeout(timer);
       idx = 0;
-      el.textContent = roles[0];
+      el.textContent = roles[0] ?? "";
       el.classList.remove("is-hidden");
-      timer = setTimeout(cycle, HOLD + FADE);
+      if (roles.length > 1) timer = setTimeout(cycle, HOLD + FADE);
+    };
+
+    el.addEventListener("roles-updated", () => {
+      roles = JSON.parse(el.dataset.roles ?? "[]");
+      start();
     });
 
-    el.textContent = roles[0];
-    timer = setTimeout(cycle, HOLD + FADE);
+    start();
   }
 </script>

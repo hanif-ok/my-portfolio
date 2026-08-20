@@ -88,45 +88,61 @@ export interface HomeDictionary {
   };
 }
 
+// The "now" badge is stamped at build time rather than hand-written, so it can
+// never sit there claiming to be current while pointing at a month that has
+// already passed. The deploy workflow also rebuilds on a monthly schedule, so
+// the stamp stays honest even during a stretch with no pushes.
+const MONTHS: Record<Locale, string[]> = {
+  en: ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"],
+  id: ["JAN", "FEB", "MAR", "APR", "MEI", "JUN", "JUL", "AGU", "SEP", "OKT", "NOV", "DES"],
+};
+
+const BUILT_AT = new Date();
+
+const buildStamp = (locale: Locale) =>
+  `${MONTHS[locale][BUILT_AT.getMonth()]} '${String(BUILT_AT.getFullYear()).slice(2)}`;
+
+// Every entry here is backed by something else on the page — a work bullet or a
+// featured project — so each one survives being asked about in an interview.
 export const SKILL_GROUPS: Array<{ title: string; items: string[] }> = [
   {
-    title: "languages",
+    title: "frontend",
     items: [
-      "JavaScript / TypeScript",
-      "Dart",
-      "Python",
-      "Go",
-      "SQL",
+      "Next.js / React",
+      "Flutter",
+      "TypeScript / JavaScript",
       "HTML / CSS",
     ],
   },
   {
-    title: "frontend",
+    title: "backend & data",
     items: [
-      "React",
-      "Vite",
+      "Node.js",
+      "PostgreSQL",
+      "Supabase",
+      "Firebase",
+      "Go",
     ],
   },
   {
-    title: "backend / scripting",
+    title: "automation",
     items: [
-      "Node / Express",
-      "Flask",
-      "Postgres",
-      "scraping (Playwright)",
+      "n8n",
+      "Puppeteer",
+      "Selenium",
+      "Python",
     ],
   },
   {
-    title: "devops & tools",
+    title: "ops & tooling",
     items: [
       "Git & GitHub Actions",
       "Docker",
-      "Nginx",
+      "Grafana / Prometheus",
       "Linux (Debian, Arch)",
       "Figma",
     ],
   },
-
 ];
 
 const ENGLISH_COPY: HomeDictionary = {
@@ -141,11 +157,11 @@ const ENGLISH_COPY: HomeDictionary = {
   hero: {
     badge: "HELLO",
     introLine1: "Hanif Omar Kertapati,",
-    introLine2: ["Software Developer", "Automation Engineer", "IT Support"],
+    introLine2: ["Fullstack Engineer"],
     contactCta: "contact me>",
   },
   now: {
-    badge: "NOW - APR '26",
+    badge: `NOW - ${buildStamp("en")}`,
     title: "currently-",
     bullets: [
       "Looking for new opportunities",
@@ -154,7 +170,7 @@ const ENGLISH_COPY: HomeDictionary = {
     ],
   },
   work: {
-    badge: "WORK",
+    badge: "WORK - career history",
     expandAll: "+ expand all",
     entries: [
       {
@@ -163,23 +179,24 @@ const ENGLISH_COPY: HomeDictionary = {
         role: "IT Support | Software Engineer Intern",
         company: "PT Asuransi Kredit Indonesia",
         description: [
-          "Automated internal email delivery using n8n via Puppeteer, reducing manual distribution effort and improving consistency.",
-          "Engineered an end-to-end Lead Management CRM using Flutter and Supabase over several iterations, streamlining the sales pipeline and UI/UX.",
-          "Developed a Next.js target tracker to monitor annual insurance KPIs in real-time.",
-          "Co-developed an HVC CRM with the Networking Dept using Next.js for VIP client retention.",
-          "Managed meeting documentation, providing concise summaries and tracking action items.",
+          "Automated delivery of 100+ recurring internal memos with n8n and Puppeteer, cutting weekly administrative time by 15%.",
+          "Built a Lead Management CRM in Flutter and Supabase across several iterations, streamlining the sales pipeline from lead capture through conversion.",
+          "Developed a real-time KPI dashboard in Next.js to track annual insurance targets, giving management department-level performance at a glance.",
+          "Co-developed a VIP client retention CRM with the Networking department in Next.js, centralizing high-value client data and follow-up workflows.",
+          "Owned cross-team meeting documentation, turning discussions into actionable summaries and tracking follow-through on key decisions.",
         ],
         featured: true,
       },
       {
         periodStart: "2022",
-        periodEnd: "24",
+        periodEnd: "2024",
         role: "Storage Engineer Intern",
         company: "PT Surya Citra Media, Tbk",
         description: [
-          "Implemented a dashboard monitoring system for various database softwares using grafana and prometheus as a basis",
-          "Automated monthly data entry tasks using selenium and AHK, reducing entry time by 20%",
-        "Wrote documentations for systems, reducing redundancy in repeatable installations"],
+          "Built a centralized database monitoring dashboard with Grafana and Prometheus, giving real-time visibility across multiple platforms.",
+          "Automated monthly data entry with Selenium and AutoHotkey, cutting manual entry time by 20% and reducing human error.",
+          "Wrote standardized technical documentation for repeat installations, cutting setup time from 2 hours to 30 minutes per deployment.",
+        ],
         featured: false,
       },
     ],
@@ -218,13 +235,13 @@ const ENGLISH_COPY: HomeDictionary = {
   },
   skillsPreview: {
     badge: "SKILLS - press -> full list",
-    title: "Testimonies",
+    title: "Testimonials",
     hint: "-> press to see the full list",
     button: "enter click",
   },
   contact: {
     badge: "CONTACT",
-    title: "Contact me",
+    title: "find me-",
     labels: {
       email: "email",
       github: "github",
@@ -235,11 +252,11 @@ const ENGLISH_COPY: HomeDictionary = {
   },
   about: {
     badge: "ABOUT",
-    title: "About Me",
-    description: "I am a software developer and automation engineer with a passion for creating efficient tools and solving complex problems. I enjoy bridging the gap between IT support and software engineering to build reliable systems.",
+    title: "about me-",
+    description: "I build internal tools end to end — CRMs, dashboards and the automation that feeds them. At an Indonesian credit insurer I shipped a Flutter lead-management CRM, a Next.js KPI dashboard, and an n8n pipeline that took a recurring memo process off people's hands. I like the unglamorous problems: the manual step nobody has gotten around to deleting yet.",
   },
   fullSkills: {
-    title: "My Skill",
+    title: "My Skills",
     subtitle: "- everything i reach for",
     slug: "/skills",
   },
@@ -262,16 +279,16 @@ const INDONESIAN_COPY: HomeDictionary = {
   hero: {
     badge: "HALO",
     introLine1: "Hanif Omar Kertapati,",
-    introLine2: ["Software Developer", "Automation Engineer", "IT Support"],
+    introLine2: ["Fullstack Engineer"],
     contactCta: "hubungi saya>",
   },
   now: {
-    badge: "SEKARANG - APR '26",
+    badge: `SEKARANG - ${buildStamp("id")}`,
     title: "sedang-",
     bullets: [
-      "Mencari Pengalaman Baru",
-      "Belajar sini dan sana",
-      "???",
+      "Mencari peluang baru",
+      "Belajar sedikit banyak hal",
+      "Mencari proyek baru",
     ],
   },
   work: {
@@ -284,22 +301,24 @@ const INDONESIAN_COPY: HomeDictionary = {
         role: "IT Support | Software Engineer Intern",
         company: "PT Asuransi Kredit Indonesia",
         description: [
-"Mengotomatisasi pengiriman 100+ memo internal berulang menggunakan n8n dan Puppeteer, menghemat 15% waktu administratif mingguan",
-"Membangun CRM Manajemen Prospek menggunakan Flutter dan Supabase, menyederhanakan alur penjualan dari penangkapan prospek hingga konversi",
-"Mengembangkan dasbor KPI real-time di Next.js untuk memantau target asuransi tahunan, memungkinkan manajemen memantau kinerja departemen secara sekilas",
-"Ikut mengembangkan CRM retensi klien VIP bersama Departemen Networking menggunakan Next.js, memusatkan data klien bernilai tinggi dan alur kerja tindak lanjut",
-"Bertanggung jawab atas dokumentasi rapat lintas tim, merangkum diskusi menjadi ringkasan yang dapat ditindaklanjuti dan memastikan tindak lanjut atas hasil keputusan utama"        ],
+          "Mengotomatisasi pengiriman 100+ memo internal berulang menggunakan n8n dan Puppeteer, menghemat 15% waktu administratif mingguan.",
+          "Membangun CRM Manajemen Prospek menggunakan Flutter dan Supabase melalui beberapa iterasi, menyederhanakan alur penjualan dari penangkapan prospek hingga konversi.",
+          "Mengembangkan dasbor KPI real-time di Next.js untuk memantau target asuransi tahunan, memungkinkan manajemen memantau kinerja departemen secara sekilas.",
+          "Ikut mengembangkan CRM retensi klien VIP bersama Departemen Networking menggunakan Next.js, memusatkan data klien bernilai tinggi dan alur kerja tindak lanjut.",
+          "Bertanggung jawab atas dokumentasi rapat lintas tim, merangkum diskusi menjadi ringkasan yang dapat ditindaklanjuti dan memastikan tindak lanjut atas keputusan utama.",
+        ],
         featured: true,
       },
       {
         periodStart: "2022",
-        periodEnd: "24",
+        periodEnd: "2024",
         role: "Storage Engineer Intern",
         company: "PT Surya Citra Media, Tbk",
         description: [
-"Menggunakan dasbor pemantauan basis data terpusat menggunakan Grafana dan Prometheus untuk visibilitas real-time di berbagai platform",
-"Mengotomatisasi proses entri data bulanan menggunakan Selenium dan AHK, memangkas waktu entri manual sebesar 20% dan mengurangi kesalahan manusia",
-"Membuat dokumentasi teknis terstandarisasi untuk instalasi berulang, memangkas waktu penyiapan dari 2 jam menjadi 30 menit per pemasangan"],
+          "Membangun dasbor pemantauan basis data terpusat menggunakan Grafana dan Prometheus untuk visibilitas real-time di berbagai platform.",
+          "Mengotomatisasi proses entri data bulanan menggunakan Selenium dan AutoHotkey, memangkas waktu entri manual sebesar 20% dan mengurangi kesalahan manusia.",
+          "Membuat dokumentasi teknis terstandarisasi untuk instalasi berulang, memangkas waktu penyiapan dari 2 jam menjadi 30 menit per pemasangan.",
+        ],
         featured: false,
       },
     ],
@@ -338,7 +357,7 @@ const INDONESIAN_COPY: HomeDictionary = {
   },
   skillsPreview: {
     badge: "KEAHLIAN - tekan -> daftar lengkap",
-    title: "Kesaksian",
+    title: "Testimoni",
     hint: "-> tekan untuk melihat daftar lengkap",
     button: "klik masuk",
   },
@@ -355,8 +374,8 @@ const INDONESIAN_COPY: HomeDictionary = {
   },
   about: {
     badge: "TENTANG",
-    title: "Tentang Saya",
-    description: "Saya adalah seorang pengembang perangkat lunak dan insinyur otomasi yang memiliki semangat untuk membuat alat yang efisien dan menyelesaikan masalah kompleks. Saya senang menjembatani celah antara dukungan IT dan rekayasa perangkat lunak untuk membangun sistem yang handal.",
+    title: "tentang saya-",
+    description: "Saya membangun perangkat internal dari hulu ke hilir — CRM, dasbor, dan otomatisasi yang menyuplainya. Di sebuah perusahaan asuransi kredit di Indonesia, saya mengerjakan CRM manajemen prospek berbasis Flutter, dasbor KPI dengan Next.js, dan pipeline n8n yang mengambil alih proses memo berulang dari tangan orang. Saya menyukai masalah yang tidak glamor: satu langkah manual yang belum sempat dihapus siapa pun.",
   },
   fullSkills: {
     title: "Keahlian Saya",

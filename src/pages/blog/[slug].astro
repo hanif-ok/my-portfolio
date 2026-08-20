@@ -22,7 +22,12 @@ const formatted = post.data.pubDate.toLocaleDateString("en-US", {
 const blogHref = `${import.meta.env.BASE_URL}blog`;
 ---
 
-<BaseLayout title={`${post.data.title} — feed`}>
+<BaseLayout
+  title={post.data.title}
+  description={post.data.excerpt}
+  type="article"
+  publishedTime={post.data.pubDate.toISOString()}
+>
   <NavBar page="blog" />
   <main class="portfolio-page">
     <div class="content-flow">

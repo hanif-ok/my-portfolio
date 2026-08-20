@@ -10,7 +10,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "generate:project-stack-images": "node scripts/generate-project-stack-images.mjs"
+    "generate:project-stack-images": "node scripts/generate-project-stack-images.mjs",
+    "generate:og-image": "node scripts/generate-og-image.mjs"
   },
   "dependencies": {
     "astro": "^6.1.8"

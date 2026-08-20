@@ -1,9 +1,9 @@
 ---
 lang: "id"
-title: "Leadx"
-titleId: "project.leadx"
-summary: "CRM Leads Management dengan approach mobile first, dibangun melalui beberapa iterasi"
-summaryId: "project.cliNotebook"
+title: "Lead CRM"
+titleId: "project.leadcrm"
+summary: "CRM manajemen prospek dengan pendekatan mobile-first, dibangun dan disempurnakan melalui beberapa iterasi bersama tim penjualan."
+summaryId: "project.leadcrm"
 year: 2025
 featured: true
 featuredOrder: 2
