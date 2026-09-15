@@ -1,28 +1,43 @@
 ---
 import { HOME_COPY } from "../i18n/home";
+import { sandboxIndexHref } from "../lib/paths";
+import type { SandboxItem } from "../lib/sandbox";
+import SandboxCard from "./SandboxCard.astro";
 
+interface Props {
+  items: SandboxItem[];
+}
+
+const { items } = Astro.props;
 const sandbox = HOME_COPY.en.sandbox;
+const indexHref = sandboxIndexHref();
 ---
 
 <section id="sandbox">
+  {/* No `is-visible` here: the home page's IntersectionObserver owns it, and
+      hardcoding it would skip this card's place in the stagger. */}
   <article class="paper-card tilt-positive">
     <span class="card-label" data-i18n-key="sandbox.badge">{sandbox.badge}</span>
     <span class="pin-dot" aria-hidden="true"></span>
 
-    <div class="sandbox-grid">
-      {
-        sandbox.items.map((item, index) => (
-          <a class="sandbox-item" href="#">
-            <span class="sandbox-box" aria-hidden="true"></span>
-            <span data-i18n-key={`sandbox.items.${index}`}>{item}</span>
-          </a>
-        ))
-      }
-    </div>
+    {
+      items.length > 0 ? (
+        <div class="sandbox-grid">
+          {items.slice(0, 4).map((item) => (
+            <SandboxCard item={item} />
+          ))}
+        </div>
+      ) : (
+        <p class="empty-state" data-i18n-key="sandbox.empty">
+          {sandbox.empty}
+        </p>
+      )
+    }
 
     <div class="row-cta">
-      <a href="#" class="row-link-red" data-i18n-key="sandbox.cta">{sandbox.cta}</a>
+      <a href={indexHref} class="row-link-red" data-i18n-key="sandbox.cta"
+        >{sandbox.cta}</a
+      >
     </div>
   </article>
 </section>
-

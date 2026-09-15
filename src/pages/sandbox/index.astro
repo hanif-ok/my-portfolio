@@ -1,0 +1,58 @@
+---
+import { getCollection } from "astro:content";
+import LocaleRuntime from "../../components/LocaleRuntime.astro";
+import NavBar from "../../components/NavBar.astro";
+import SandboxCard from "../../components/SandboxCard.astro";
+import { HOME_COPY } from "../../i18n/home";
+import { groupSandbox } from "../../lib/sandbox";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const items = groupSandbox(
+  await getCollection("sandbox", ({ data }) => !data.draft)
+);
+const copy = HOME_COPY.en.sandbox.listing;
+---
+
+<BaseLayout
+  title="the sandbox"
+  description="Side projects and experiments — things built for the pleasure of building them."
+>
+  <NavBar page="sandbox" />
+  <main class="portfolio-page">
+    <div class="content-flow">
+      {/* `is-visible` is mandatory on every paper-card here: the fade-in
+          observer lives only on the home page, and .paper-card is opacity 0
+          until something adds this class. */}
+      <article class="paper-card tilt-negative is-visible">
+        <span class="card-label">
+          /SANDBOX - {items.length}
+          {items.length === 1 ? "EXPERIMENT" : "EXPERIMENTS"}
+        </span>
+        <span class="pin-dot" aria-hidden="true"></span>
+
+        <h1 class="article-title" data-i18n-key="sandbox.listing.title">
+          {copy.title}
+        </h1>
+        <p class="page-sub" data-i18n-key="sandbox.listing.subtitle">
+          {copy.subtitle}
+        </p>
+      </article>
+
+      {
+        items.length > 0 ? (
+          <div class="sandbox-grid sandbox-grid-page">
+            {items.map((item) => (
+              <SandboxCard item={item} />
+            ))}
+          </div>
+        ) : (
+          <p class="empty-state" data-i18n-key="sandbox.empty">
+            {HOME_COPY.en.sandbox.empty}
+          </p>
+        )
+      }
+    </div>
+  </main>
+
+  <LocaleRuntime dictionaries={HOME_COPY} />
+</BaseLayout>

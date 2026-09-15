@@ -65,6 +65,33 @@ const socialImage = new URL(withBase(image), Astro.site);
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={socialImage} />
 
+    <script is:inline>
+      // Stamp the locale onto <html> before first paint, so the bilingual
+      // content panes ([data-lang-pane] in global.css) render in the right
+      // language immediately instead of flashing English first.
+      // LocaleRuntime re-applies this on load and owns every switch; this only
+      // removes the flash. With JS off nothing is stamped and EN is the
+      // default, which is exactly the desired fallback.
+      (function () {
+        // Marks JS as available. The card fade-in in global.css is gated on
+        // this, so with JS off the cards simply render rather than staying at
+        // opacity 0 forever.
+        document.documentElement.classList.add("js");
+        try {
+          var saved = localStorage.getItem("portfolio-locale");
+          var locale =
+            saved === "en" || saved === "id"
+              ? saved
+              : (navigator.language || "").toLowerCase().indexOf("id") === 0
+                ? "id"
+                : "en";
+          document.documentElement.setAttribute("data-locale", locale);
+        } catch (e) {
+          document.documentElement.setAttribute("data-locale", "en");
+        }
+      })();
+    </script>
+
     <link rel="icon" type="image/svg+xml" href={withBase("favicon.svg")} />
     <link rel="icon" href={withBase("favicon.ico")} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />

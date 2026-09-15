@@ -51,8 +51,15 @@ export interface HomeDictionary {
   };
   sandbox: {
     badge: string;
-    items: string[];
     cta: string;
+    empty: string;
+    // Per-item title and summary come from the sandbox content collection, not
+    // from here - see the data-lang-pane rules in global.css. Only chrome lives
+    // in this dictionary, because LocaleRuntime overwrites the textContent of
+    // anything carrying a data-i18n-key.
+    actions: { about: string; live: string; source: string };
+    listing: { title: string; subtitle: string };
+    detail: { badge: string; back: string; yearLabel: string; stackLabel: string };
   };
   skillsPreview: {
     badge: string;
@@ -229,9 +236,24 @@ const ENGLISH_COPY: HomeDictionary = {
     ],
   },
   sandbox: {
-    badge: "/SANDBOX - toys",
-    items: ["scroll-phys", "css-clock", "midi-keys", "regex-golf"],
+    badge: "/SANDBOX - things I built for fun",
     cta: "poke around ->",
+    empty: "Nothing in the sandbox yet.",
+    actions: {
+      about: "about this ->",
+      live: "open it live ->",
+      source: "source on github ->",
+    },
+    listing: {
+      title: "the sandbox.",
+      subtitle: "side projects, built for the pleasure of building them.",
+    },
+    detail: {
+      badge: "/SANDBOX",
+      back: "<- back to the sandbox",
+      yearLabel: "year",
+      stackLabel: "stack",
+    },
   },
   skillsPreview: {
     badge: "SKILLS - press -> full list",
@@ -351,9 +373,24 @@ const INDONESIAN_COPY: HomeDictionary = {
     ],
   },
   sandbox: {
-    badge: "/SANDBOX - mainan",
-    items: ["scroll-phys", "css-clock", "midi-keys", "regex-golf"],
+    badge: "/SANDBOX - yang saya bikin buat senang-senang",
     cta: "jelajahi ->",
+    empty: "Belum ada apa-apa di sandbox.",
+    actions: {
+      about: "tentang ini ->",
+      live: "buka aplikasinya ->",
+      source: "kode di github ->",
+    },
+    listing: {
+      title: "sandbox.",
+      subtitle: "proyek sampingan, dibuat karena senang membuatnya.",
+    },
+    detail: {
+      badge: "/SANDBOX",
+      back: "<- kembali ke sandbox",
+      yearLabel: "tahun",
+      stackLabel: "teknologi",
+    },
   },
   skillsPreview: {
     badge: "KEAHLIAN - tekan -> daftar lengkap",

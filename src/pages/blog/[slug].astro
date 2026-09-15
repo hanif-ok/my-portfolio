@@ -2,6 +2,9 @@
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import NavBar from "../../components/NavBar.astro";
+import LocaleRuntime from "../../components/LocaleRuntime.astro";
+import { HOME_COPY } from "../../i18n/home";
+import { withBase } from "../../lib/paths";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog", ({ data }) => !data.draft);
@@ -19,7 +22,7 @@ const formatted = post.data.pubDate.toLocaleDateString("en-US", {
   day: "numeric",
   year: "numeric",
 });
-const blogHref = `${import.meta.env.BASE_URL}blog`;
+const blogHref = withBase("blog");
 ---
 
 <BaseLayout
@@ -61,6 +64,8 @@ const blogHref = `${import.meta.env.BASE_URL}blog`;
 
     </div>
   </main>
+
+  <LocaleRuntime dictionaries={HOME_COPY} />
 </BaseLayout>
 
 <style>

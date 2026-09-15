@@ -2,6 +2,9 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import NavBar from "../../components/NavBar.astro";
+import LocaleRuntime from "../../components/LocaleRuntime.astro";
+import { HOME_COPY } from "../../i18n/home";
+import { withBase } from "../../lib/paths";
 
 const allPosts = (
   await getCollection("blog", ({ data }) => !data.draft)
@@ -87,7 +90,7 @@ for (const post of allPosts) {
                   </div>
                   <h2 class="feed-title">{post.data.title}</h2>
                   <p class="feed-excerpt">{post.data.excerpt}</p>
-                  <a href={`/blog/${post.id}`} class="read-btn">
+                  <a href={withBase(`blog/${post.id}`)} class="read-btn">
                     read article <span aria-hidden="true">—&gt;</span>
                   </a>
                 </div>
@@ -103,6 +106,8 @@ for (const post of allPosts) {
 
     </div>
   </main>
+
+  <LocaleRuntime dictionaries={HOME_COPY} />
 </BaseLayout>
 
 <style>

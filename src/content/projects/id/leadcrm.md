@@ -6,7 +6,7 @@ summary: "CRM manajemen prospek dengan pendekatan mobile-first, dibangun dan dis
 summaryId: "project.leadcrm"
 year: 2025
 featured: true
-featuredOrder: 2
+featuredOrder: 0
 image: "/images/project-stacks/leadcrm-stack.svg"
 href: "#"
 techStack: ["Flutter", "Supabase", "Firebase"]

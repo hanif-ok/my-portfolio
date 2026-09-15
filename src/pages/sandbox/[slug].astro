@@ -1,0 +1,271 @@
+---
+import { getCollection, render } from "astro:content";
+import LocaleRuntime from "../../components/LocaleRuntime.astro";
+import NavBar from "../../components/NavBar.astro";
+import { HOME_COPY } from "../../i18n/home";
+import { resolveAsset, sandboxIndexHref } from "../../lib/paths";
+import { groupSandbox, type SandboxItem } from "../../lib/sandbox";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("sandbox", ({ data }) => !data.draft);
+  // groupSandbox collapses the en/ + id/ twins, so each project emits exactly
+  // one route. Mapping over the raw entries instead would emit duplicate params
+  // and fail the build.
+  return groupSandbox(entries).map((item) => ({
+    params: { slug: item.slug },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props as { item: SandboxItem };
+const { en, id } = item;
+
+const { Content: ContentEn } = await render(en);
+const { Content: ContentId } = id ? await render(id) : { Content: null };
+
+const copy = HOME_COPY.en.sandbox;
+const backHref = sandboxIndexHref();
+
+// Deliberately not passed to BaseLayout as `image`: the cover is an SVG, and
+// social scrapers do not render SVG OG images. Falling back to og-cover.png
+// gives a real preview instead of a blank one.
+const cover = resolveAsset(en.data.cover);
+---
+
+<BaseLayout title={en.data.title} description={en.data.summary} type="article">
+  <NavBar page="sandbox" />
+  <main class="portfolio-page">
+    <div class="content-flow">
+      <a href={backHref} class="back-link" data-i18n-key="sandbox.detail.back"
+        >{copy.detail.back}</a
+      >
+
+      <article>
+        {/* `is-visible` hardcoded: no fade-in observer runs on this page. */}
+        <div class="paper-card tilt-positive is-visible">
+          <span class="card-label" data-i18n-key="sandbox.detail.badge"
+            >{copy.detail.badge}</span
+          >
+          <span class="pin-dot" aria-hidden="true"></span>
+
+          <div class="sandbox-hero">
+            <img
+              class="sandbox-hero-cover"
+              src={cover}
+              alt={en.data.coverAlt ?? ""}
+              width="1200"
+              height="750"
+            />
+
+            <div class="sandbox-hero-copy">
+              <h1 class="article-title">
+                <span data-lang-pane="en">{en.data.title}</span>
+                {id && <span data-lang-pane="id">{id.data.title}</span>}
+              </h1>
+
+              <p class="article-excerpt">
+                <span data-lang-pane="en">{en.data.summary}</span>
+                {id && <span data-lang-pane="id">{id.data.summary}</span>}
+              </p>
+
+              <dl class="spec-list">
+                <div>
+                  <dt data-i18n-key="sandbox.detail.yearLabel">
+                    {copy.detail.yearLabel}
+                  </dt>
+                  <dd>{en.data.year}</dd>
+                </div>
+                {
+                  en.data.stack.length > 0 && (
+                    <div>
+                      <dt data-i18n-key="sandbox.detail.stackLabel">
+                        {copy.detail.stackLabel}
+                      </dt>
+                      <dd class="chip-wrap">
+                        {en.data.stack.map((tech) => (
+                          <span class="chip">{tech}</span>
+                        ))}
+                      </dd>
+                    </div>
+                  )
+                }
+              </dl>
+
+              <div class="sandbox-actions">
+                {
+                  en.data.liveHref && (
+                    <a
+                      class="paper-btn paper-btn-primary"
+                      href={en.data.liveHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      data-i18n-key="sandbox.actions.live"
+                    >
+                      {copy.actions.live}
+                    </a>
+                  )
+                }
+                {
+                  en.data.repoHref && (
+                    <a
+                      class="paper-btn"
+                      href={en.data.repoHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      data-i18n-key="sandbox.actions.source"
+                    >
+                      {copy.actions.source}
+                    </a>
+                  )
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Both bodies ship; the data-lang-pane CSS in global.css shows one.
+            LocaleRuntime cannot translate rendered markdown, so no
+            data-i18n-key may appear inside these panes. */}
+        <div class="article-body" data-lang-pane="en"><ContentEn /></div>
+        {
+          ContentId && (
+            <div class="article-body" data-lang-pane="id">
+              <ContentId />
+            </div>
+          )
+        }
+      </article>
+
+      <div class="article-footer">
+        <a href={backHref} class="paper-btn" data-i18n-key="sandbox.detail.back"
+          >{copy.detail.back}</a
+        >
+      </div>
+    </div>
+  </main>
+
+  <LocaleRuntime dictionaries={HOME_COPY} />
+</BaseLayout>
+
+<style>
+  .back-link {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--color-ink-muted);
+    letter-spacing: 0.04em;
+    transition: color 0.15s;
+  }
+  .back-link:hover {
+    color: var(--color-blueprint);
+  }
+  .article-title {
+    margin: 0 0 0.45rem;
+    font-family: var(--font-hand);
+    font-size: clamp(1.9rem, 3vw + 0.8rem, 2.9rem);
+    font-weight: 400;
+    line-height: 1.05;
+    color: var(--color-ink-primary);
+  }
+  .article-excerpt {
+    margin: 0;
+    font-family: var(--font-kalam);
+    font-size: 1.18rem;
+    color: var(--color-ink-secondary);
+    line-height: 1.35;
+  }
+  /* Article prose */
+  .article-body {
+    margin-top: 0.5rem;
+    max-width: 72ch;
+  }
+  .article-body :global(h2) {
+    margin: 2.2rem 0 0.6rem;
+    font-family: var(--font-hand);
+    font-size: 1.85rem;
+    font-weight: 400;
+    color: var(--color-ink-primary);
+    line-height: 1.1;
+  }
+  .article-body :global(h3) {
+    margin: 1.6rem 0 0.4rem;
+    font-family: var(--font-script);
+    font-size: 1.65rem;
+    font-weight: 400;
+    color: var(--color-ink-primary);
+    line-height: 1.1;
+  }
+  .article-body :global(p) {
+    margin: 0 0 1.05rem;
+    font-family: var(--font-kalam);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--color-ink-secondary);
+  }
+  .article-body :global(ul),
+  .article-body :global(ol) {
+    margin: 0 0 1rem;
+    padding-left: 1.4rem;
+  }
+  .article-body :global(li) {
+    margin-bottom: 0.3rem;
+    font-family: var(--font-kalam);
+    font-size: 1.08rem;
+    line-height: 1.5;
+    color: var(--color-ink-secondary);
+  }
+  .article-body :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    background: var(--color-blueprint-soft);
+    border: 1px solid rgba(52, 152, 219, 0.2);
+    padding: 0.1rem 0.35rem;
+  }
+  .article-body :global(pre) {
+    margin: 1.2rem 0;
+    border: var(--line-main);
+    background: var(--color-ink-primary);
+    padding: 1.15rem 1.3rem;
+    overflow-x: auto;
+  }
+  .article-body :global(pre code) {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 0.81rem;
+    color: var(--color-paper);
+  }
+  .article-body :global(blockquote) {
+    margin: 1.2rem 0;
+    border-left: 3px solid var(--color-blueprint);
+    background: var(--color-blueprint-soft);
+    padding: 0.55rem 0.9rem 0.55rem 1rem;
+  }
+  .article-body :global(blockquote p) {
+    margin: 0;
+    font-style: italic;
+    color: var(--color-ink-secondary);
+  }
+  .article-body :global(hr) {
+    border: none;
+    border-top: var(--line-soft);
+    margin: 2rem 0;
+  }
+  .article-body :global(a) {
+    color: var(--color-blueprint);
+    border-bottom: 1px solid rgba(52, 152, 219, 0.3);
+    transition: border-color 0.15s;
+  }
+  .article-body :global(a:hover) {
+    border-color: var(--color-blueprint);
+  }
+  .article-body :global(strong) {
+    font-weight: 700;
+    color: var(--color-ink-primary);
+  }
+  .article-footer {
+    display: flex;
+    padding-bottom: 2rem;
+  }
+</style>

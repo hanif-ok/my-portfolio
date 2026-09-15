@@ -150,8 +150,11 @@ button {
   }
 }
 
-.paper-card,
-.footer-card {
+/* Scoped to :root.js (stamped by the head script in BaseLayout) so the cards
+   are only hidden when JavaScript is around to reveal them again. Without it
+   the fade-in observer never runs and the whole page renders blank. */
+:root.js .paper-card,
+:root.js .footer-card {
   opacity: 0;
 }
 
@@ -578,25 +581,186 @@ button {
 
 .sandbox-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.6rem 0.7rem;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 1rem 0.9rem;
+}
+
+/* The listing page has no wrapping paper-card, so it can afford wider cards. */
+.sandbox-grid-page {
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
 }
 
 .sandbox-item {
   display: grid;
-  gap: 0.15rem;
   align-content: start;
-}
-
-.sandbox-item span:last-child {
-  font-family: var(--font-mono);
-  font-size: 0.66rem;
-}
-
-.sandbox-box {
+  gap: 0.4rem;
   border: var(--line-main);
-  height: 4.2rem;
+  background: var(--color-paper);
+  box-shadow: var(--shadow-card);
+  padding: 0.55rem 0.6rem 0.7rem;
+  transition:
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+}
+
+.sandbox-item:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.12);
+}
+
+/* Was a bare 4.2rem placeholder; now the cover frame. */
+.sandbox-box {
+  display: block;
+  border: var(--line-main);
   background: rgba(44, 62, 80, 0.02);
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+}
+
+.sandbox-box img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sandbox-title {
+  margin: 0;
+  font-family: var(--font-script);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.sandbox-title a:hover {
+  color: var(--color-blueprint);
+}
+
+.sandbox-summary {
+  margin: 0;
+  color: var(--color-ink-secondary);
+  font-family: var(--font-script);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.sandbox-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.15rem;
+}
+
+.paper-btn {
+  display: inline-block;
+  border: var(--line-main);
+  background: var(--color-paper);
+  color: var(--color-ink-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.67rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.65rem;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.paper-btn:hover {
+  background: var(--color-ink-primary);
+  color: var(--color-paper);
+}
+
+.paper-btn-primary {
+  background: var(--color-ink-primary);
+  color: var(--color-paper);
+}
+
+.paper-btn-primary:hover {
+  background: var(--color-blueprint);
+  border-color: var(--color-blueprint);
+}
+
+/* Sandbox about-page hero */
+.sandbox-hero {
+  display: grid;
+  grid-template-columns: minmax(200px, 300px) 1fr;
+  gap: 1.35rem;
+  align-items: start;
+}
+
+.sandbox-hero-cover {
+  display: block;
+  width: 100%;
+  /* `height: auto` is load-bearing: the img carries width/height attributes
+     (good - they reserve layout space), and that height acts as a
+     presentational hint which would otherwise win over aspect-ratio and render
+     the cover at its full 750px natural height. */
+  height: auto;
+  border: var(--line-main);
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+.spec-list {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0.9rem 0 1rem;
+}
+
+.spec-list > div {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr;
+  gap: 0.6rem;
+  align-items: baseline;
+}
+
+.spec-list dt {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+.spec-list dd {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.chip-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.page-sub {
+  margin: 0.25rem 0 0;
+  font-family: var(--font-kalam);
+  font-size: 1.15rem;
+  color: var(--color-ink-secondary);
+}
+
+/* Bilingual content panes. Both language variants ship in the HTML and CSS
+   shows one. EN is the pre-runtime default, so English readers never see a
+   swap and the page stays readable if LocaleRuntime never runs at all.
+   `revert` (not `block`) keeps the UA default, so these same two rules work on
+   a <span> inside a <p> and on a <div> wrapping rendered markdown. */
+[data-lang-pane] {
+  display: none;
+}
+
+[data-lang-pane="en"] {
+  display: revert;
+}
+
+:root[data-locale="id"] [data-lang-pane="en"] {
+  display: none;
+}
+
+:root[data-locale="id"] [data-lang-pane="id"] {
+  display: revert;
 }
 
 .testimony-box {
@@ -794,7 +958,8 @@ button {
 
 @media (max-width: 920px) {
   .section-two-up,
-  .skills-groups {
+  .skills-groups,
+  .sandbox-hero {
     grid-template-columns: 1fr;
   }
 

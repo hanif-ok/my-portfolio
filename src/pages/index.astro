@@ -3,7 +3,6 @@ import { getCollection } from "astro:content";
 import AboutSection from "../components/AboutSection.astro";
 import BlogSection from "../components/BlogSection.astro";
 import ContactSection from "../components/ContactSection.astro";
-import FooterCta from "../components/FooterCta.astro";
 import FullSkillsSection from "../components/FullSkillsSection.astro";
 import HeroNowRow from "../components/HeroNowRow.astro";
 import LocaleRuntime from "../components/LocaleRuntime.astro";
@@ -12,6 +11,7 @@ import ProjectsSection from "../components/ProjectsSection.astro";
 import SandboxSection from "../components/SandboxSection.astro";
 import WorkSection from "../components/WorkSection.astro";
 import { HOME_COPY } from "../i18n/home";
+import { groupSandbox } from "../lib/sandbox";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 const allBlogPosts = (
@@ -20,11 +20,28 @@ const allBlogPosts = (
 
 const latestPosts = allBlogPosts.slice(0, 4);
 
-const featuredProjects = (
-  await getCollection("projects", ({ data }) => data.featured)
-).sort((a, b) => {
-  const orderA = a.data.featuredOrder ?? Number.MAX_SAFE_INTEGER;
-  const orderB = b.data.featuredOrder ?? Number.MAX_SAFE_INTEGER;
+const sandboxItems = groupSandbox(
+  await getCollection("sandbox", ({ data }) => !data.draft)
+);
+
+// Both language twins are ordered by the EN twin's featuredOrder. Sorting each
+// twin on its own value let the two drift, which silently reordered the
+// carousel when you switched locale - the same trap lib/sandbox.ts avoids by
+// construction.
+const allProjects = await getCollection("projects", ({ data }) => data.featured);
+const projectSlug = (entryId: string) => entryId.replace(/^(?:en|id)\//, "");
+const canonicalOrder = new Map(
+  allProjects
+    .filter((project) => !project.id.startsWith("id/"))
+    .map((project) => [
+      projectSlug(project.id),
+      project.data.featuredOrder ?? Number.MAX_SAFE_INTEGER,
+    ])
+);
+
+const featuredProjects = allProjects.sort((a, b) => {
+  const orderA = canonicalOrder.get(projectSlug(a.id)) ?? Number.MAX_SAFE_INTEGER;
+  const orderB = canonicalOrder.get(projectSlug(b.id)) ?? Number.MAX_SAFE_INTEGER;
 
   if (orderA !== orderB) return orderA - orderB;
   return b.data.year - a.data.year;
@@ -39,6 +56,7 @@ const featuredProjects = (
       <AboutSection />
       <WorkSection />
       <ProjectsSection projects={featuredProjects} />
+      <SandboxSection items={sandboxItems} />
 
       <BlogSection posts={latestPosts} totalCount={allBlogPosts.length} />
 

@@ -6,7 +6,7 @@ summary: "CRM berbasis web untuk mendokumentasikan dan mengelola hubungan dengan
 summaryId: "project.custcrm"
 year: 2025
 featured: true
-featuredOrder: 2
+featuredOrder: 1
 image: "/images/project-stacks/custcrm-stack.svg"
 href: "#"
 techStack: ["Next.js", "Supabase"]

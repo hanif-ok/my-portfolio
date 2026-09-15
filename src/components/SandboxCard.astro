@@ -1,0 +1,59 @@
+---
+import { HOME_COPY } from "../i18n/home";
+import { resolveAsset, sandboxHref } from "../lib/paths";
+import type { SandboxItem } from "../lib/sandbox";
+
+interface Props {
+  item: SandboxItem;
+}
+
+const { item } = Astro.props;
+const { en, id } = item;
+const labels = HOME_COPY.en.sandbox.actions;
+const about = sandboxHref(item.slug);
+
+// The outbound CTA is the deploy when there is one, and the source otherwise.
+// The collection schema refuses an entry with neither, so this is never dead.
+const outbound = en.data.liveHref
+  ? { href: en.data.liveHref, key: "sandbox.actions.live", label: labels.live }
+  : { href: en.data.repoHref!, key: "sandbox.actions.source", label: labels.source };
+---
+
+<article class="sandbox-item">
+  {/* Decorative: the title link below points at the same place, so this is not
+      a second tab stop and not a second announcement. */}
+  <a class="sandbox-box" href={about} tabindex="-1" aria-hidden="true">
+    <img
+      src={resolveAsset(en.data.cover)}
+      alt=""
+      loading="lazy"
+      width="1200"
+      height="750"
+    />
+  </a>
+
+  <h3 class="sandbox-title">
+    <a href={about}>
+      <span data-lang-pane="en">{en.data.title}</span>
+      {id && <span data-lang-pane="id">{id.data.title}</span>}
+    </a>
+  </h3>
+
+  <p class="sandbox-summary">
+    <span data-lang-pane="en">{en.data.summary}</span>
+    {id && <span data-lang-pane="id">{id.data.summary}</span>}
+  </p>
+
+  <div class="sandbox-actions">
+    <a
+      class="paper-btn paper-btn-primary"
+      href={outbound.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      data-i18n-key={outbound.key}>{outbound.label}</a
+    >
+    <a class="paper-btn" href={about} data-i18n-key="sandbox.actions.about"
+      >{labels.about}</a
+    >
+  </div>
+</article>

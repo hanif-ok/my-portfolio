@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import { withBase } from "../lib/paths";
 
 interface Props {
   posts: CollectionEntry<"blog">[];
@@ -7,6 +8,7 @@ interface Props {
 }
 
 const { posts, totalCount } = Astro.props;
+const blogHref = withBase("blog");
 
 function formatPostMeta(date: Date, readMinutes: number): string {
   const month = date
@@ -25,7 +27,7 @@ function formatPostMeta(date: Date, readMinutes: number): string {
     <div class="blog-list">
       {
         posts.map((post) => (
-          <a class="blog-item" href={`/blog/${post.id}`}>
+          <a class="blog-item" href={withBase(`blog/${post.id}`)}>
             <span class="blog-title">{post.data.title}</span>
             <span class="blog-meta">
               {formatPostMeta(post.data.pubDate, post.data.readMinutes)}
@@ -36,7 +38,7 @@ function formatPostMeta(date: Date, readMinutes: number): string {
     </div>
 
     <div class="row-cta">
-      <a href="#" class="row-link-red">read the feed -&gt;</a>
+      <a href={blogHref} class="row-link-red">read the feed -&gt;</a>
     </div>
   </article>
 </section>

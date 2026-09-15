@@ -36,6 +36,9 @@ const { dictionaries } = Astro.props;
     const dictionary = dictionaries[safeLocale] || dictionaries.en;
 
     document.documentElement.lang = safeLocale;
+    // <html> drives the [data-lang-pane] CSS (and is stamped pre-paint in
+    // BaseLayout); <body> is what the project carousel reads.
+    document.documentElement.dataset.locale = safeLocale;
     document.body.dataset.locale = safeLocale;
 
     document.querySelectorAll("[data-i18n-key]").forEach((node) => {
