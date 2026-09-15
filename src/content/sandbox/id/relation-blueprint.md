@@ -11,36 +11,38 @@ repoHref: "https://github.com/hanif-ok/relation_blueprint"
 stack: ["React", "TypeScript", "Vite", "Konva", "Cytoscape", "Dexie", "Google Drive API"]
 ---
 
-Relation Blueprint menjawab tiga pertanyaan tentang sekelompok orang: siapa ada di mana, mereka seperti apa, dan bagaimana mereka saling terhubung.
+Sebuah denah dengan wajah-wajah di atasnya.
 
-Kamu mengunggah denah — gedung, jalan, atau lokasi acara — lalu menempatkan orang di atasnya sebagai penanda berfoto. Buka siapa pun untuk membaca profilnya. Tarik hubungan antar orang, dan peta menumbuhkan konektor yang mengikuti penanda saat kamu menggesernya. Ada tampilan graf untuk saat tata letak spasial bukan lagi pertanyaan yang berguna.
+Itu saja idenya. Unggah peta tempat yang nyata — kantor, gedung acara, sebuah jalan — lalu taruh orang di atasnya. Sekarang kamu bisa melihat siapa ada di mana. Klik siapa pun untuk membaca profilnya. Tarik garis antara dua orang, dan peta menjaga garis itu tetap menempel saat kamu memindahkan mereka.
 
-## Tanpa server di belakangnya
+Kalau peta bukan lagi sudut pandang yang berguna, ada graf: orang yang sama, disusun berdasarkan hubungan, bukan lokasi. Ketuk seseorang dan semuanya menata ulang di sekelilingnya.
 
-Seluruhnya hanya bundel statis. Tidak ada backend, tidak ada akun, dan tidak ada basis data yang saya kendalikan — kamu menghubungkan Google Drive milikmu sendiri, dan di situlah datamu tinggal, dalam folder biasa yang bisa kamu buka, salin, atau hapus tanpa aplikasinya.
+## Datamu tidak ke mana-mana
 
-Aplikasi ini hanya meminta scope `drive.file`, artinya ia cuma bisa menyentuh berkas yang ia buat sendiri dan tidak ada yang lain di Drive-mu. Token akses disimpan di memori saja dan tidak pernah dipersistenkan; tidak ada refresh token yang mengendap di peramban.
+Ini bagian yang paling saya pedulikan.
 
-Bagian inilah yang paling ingin saya benarkan. Aplikasi yang menyimpan nama, nomor telepon, dan foto orang sungguhan seharusnya tidak sekalian meminta kamu memercayai server yang saya jalankan.
+Tidak ada server. Tidak ada pendaftaran, tidak ada akun, tidak ada basis data yang duduk di mesin orang lain sambil diam-diam mengumpulkan apa yang kamu ketik. Kamu menghubungkan Google Drive milikmu sendiri, dan di situlah semuanya tinggal — di folder biasa yang bisa kamu buka, salin, atau hapus tanpa perlu izin aplikasinya.
 
-## Titik komit
+Aplikasinya cuma bisa melihat berkas yang ia buat sendiri, bukan sisa isi Drive-mu. Dan ia melupakan sesi loginmu begitu tab ditutup.
 
-Aplikasinya offline-first, jadi IndexedDB adalah sumber kebenaran saat runtime — perubahan mengantre secara lokal dan terkirim saat kamu tersambung lagi.
+Itu penting karena aplikasi ini menyimpan orang sungguhan — nama mereka, wajah mereka, nomor telepon mereka. Rasanya salah kalau dibuat dengan cara lain.
 
-Penyimpanannya dipecah menjadi shard, dan batasan yang menarik adalah tab peramban bisa mati di tengah penulisan kapan saja. Maka basis data ditulis sebagai sekumpulan shard plus satu manifest, dan **penimpaan manifest adalah satu-satunya titik komit**: shard ditulis lebih dulu dan tidak berarti apa-apa sampai manifest baru menyebutnya. Penulisan yang terputus meninggalkan shard yatim dan basis data yang utuh sempurna. Ada uji injeksi kegagalan yang mematikan penulisan di tengah jalan dan memastikan persis hal itu.
+## Dibuat untuk tahan diinterupsi
 
-## Dua kanvas
+Peramban ditutup. Laptop tertidur. Wi-Fi putus di tengah proses menyimpan.
 
-Editor petanya memakai Konva — lapisan yang bisa dikunci dan diurutkan ulang, bentuk dan zona untuk ruangan, penanda portal yang melompat ke peta lain, dan grup peta bersarang untuk lantai → gedung → jalan. Koordinat penanda disimpan dalam ruang gambar, bukan ruang layar, sehingga menyetel ulang gambar latar tetap menambatkan setiap orang pada titik fisiknya. Satu orang yang ditempatkan di enam peta tetap satu catatan; sunting sekali, semua penempatannya ikut.
+Jadi basis datanya ditulis sedemikian rupa sehingga langkah paling akhir adalah satu-satunya yang dihitung. Semua yang sebelumnya tidak terlihat. Kalau proses simpan mati di tengah jalan, kamu tidak dapat basis data setengah jadi — kamu dapat yang lama, utuh sepenuhnya, seolah tidak terjadi apa-apa.
 
-Grafnya memakai Cytoscape. Ketuk sebuah simpul dan tata letaknya membentuk ulang di sekitar orang itu; ketuk yang lain dan fokusnya berpindah; keluar dari fokus dan tata letak simpananmu kembali. Menggeser simpul hanya soal tata letak — tidak pernah mengubah data.
+Ia juga jalan tanpa internet sama sekali. Perubahan menunggu, lalu tersinkron saat kamu kembali daring.
 
-## Pencarian yang memang saya mau
+## Pencarian yang paham maksudmu
 
-Fuzzy, toleran terhadap awalan, dengan bobot lebih pada nama — dan dilingkupi per atribut lewat kotak centang. Bagian terakhir itu intinya: mencari "smith" seharusnya bisa berarti nama belakang, bukan setiap pandai besi dalam data. Setiap hasil menunjukkan field mana yang memunculkannya, dan indeksnya diperbarui bertahap sambil kamu menyunting.
+Ketik "smith" dan yang kamu maksud kemungkinan nama belakang, bukan setiap pandai besi di catatanmu.
+
+Jadi kamu yang memilih field mana yang dihitung. Centang satu kotak, dan pencariannya hanya melihat di situ. Ia juga menunjukkan field mana yang cocok, supaya kamu tahu kenapa sesuatu muncul.
 
 ## Posisinya sekarang
 
-Enam dari delapan fase v1 sudah rampung dan terverifikasi. Penyedia penyimpanan kedua sengaja dibatalkan alih-alih dibiarkan menggantung — login Mega.nz adalah kredensial akun penuh, sedangkan seluruh premis di sini adalah hak akses seminimal mungkin, jadi alternatif Drive yang berlingkup memenangkan perdebatan itu.
+Sebagian besar sudah jadi dan berfungsi. Satu fitur yang direncanakan sengaja dicoret — opsi penyimpanan kedua yang bakal meminta kata sandi seluruh akunmu. Inti aplikasi ini adalah meminta sesedikit mungkin, jadi fitur itu tidak lolos.
 
-Semua dependensinya gratis dan sumber terbuka. tldraw ditolak saat riset karena mensyaratkan lisensi produksi berbayar.
+Gratis dan sumber terbuka, dari atas sampai bawah.

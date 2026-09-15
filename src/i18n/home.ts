@@ -236,7 +236,7 @@ const ENGLISH_COPY: HomeDictionary = {
     ],
   },
   sandbox: {
-    badge: "/SANDBOX - things I built for fun",
+    badge: "/SANDBOX",
     cta: "poke around ->",
     empty: "Nothing in the sandbox yet.",
     actions: {
@@ -373,12 +373,12 @@ const INDONESIAN_COPY: HomeDictionary = {
     ],
   },
   sandbox: {
-    badge: "/SANDBOX - yang saya bikin buat senang-senang",
+    badge: "/SANDBOX",
     cta: "jelajahi ->",
     empty: "Belum ada apa-apa di sandbox.",
     actions: {
       about: "tentang ini ->",
-      live: "buka aplikasinya ->",
+      live: "buka ->",
       source: "kode di github ->",
     },
     listing: {

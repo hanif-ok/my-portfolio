@@ -10,36 +10,38 @@ repoHref: "https://github.com/hanif-ok/relation_blueprint"
 stack: ["React", "TypeScript", "Vite", "Konva", "Cytoscape", "Dexie", "Google Drive API"]
 ---
 
-Relation Blueprint answers three questions about a group of people: who is where, what are they like, and how do they connect.
+A floor plan with faces on it.
 
-You upload a floor plan — a building, a street, a venue — and place people on it as photo markers. Open anyone to read their profile. Draw links between them and the map grows connectors that follow the markers as you drag them around. There is a graph view for when spatial layout stops being the useful question.
+That is the whole idea. Upload a map of somewhere real — an office, a venue, a street — and drop people onto it. Now you can see who sits where. Click anyone to read who they are. Draw a line between two people and the map keeps that line attached as you move them around.
 
-## No server behind it
+When the map stops being the useful view, there is a graph: the same people, arranged by relationship instead of geography. Tap someone and everything rearranges around them.
 
-The whole thing is a static bundle. No backend, no accounts, and no database I control — you connect your own Google Drive, and that is where your data lives, in an ordinary folder you can open, copy or delete without the app.
+## Your data never leaves your hands
 
-It asks for the `drive.file` scope only, which means it can touch the files it created and nothing else in your Drive. The access token is held in memory and never persisted; there is no refresh token sitting in your browser.
+This is the part I care about most.
 
-This is the part I most wanted to get right. An app holding names, phone numbers and photographs of real people should not also ask you to trust a server I run.
+There is no server. No sign-up, no account, no database sitting on someone else's machine quietly collecting what you typed. You connect your own Google Drive, and that is where everything lives — in a normal folder you can open, copy or delete without ever asking the app's permission.
 
-## The commit point
+The app can only see files it made itself, never the rest of your Drive. It forgets your login the moment you close the tab.
 
-It is offline-first, so IndexedDB is the runtime source of truth — changes queue locally and push when you reconnect.
+That matters because this thing holds real people — their names, their faces, their phone numbers. It felt wrong to build it any other way.
 
-Storage is sharded, and the interesting constraint is that a browser tab can die mid-write at any moment. So the database is written as a set of shards plus a manifest, and **the manifest overwrite is the sole commit point**: shards are written first and stay inert until a new manifest names them. An interrupted write leaves orphaned shards and a perfectly intact database. There is a failure-injection test that kills the write partway through and asserts exactly that.
+## Built to survive being interrupted
 
-## Two canvases
+Browsers get closed. Laptops go to sleep. Wi-Fi drops halfway through a save.
 
-The map editor is Konva — layers you can lock and reorder, drawn shapes and zones for rooms, portal markers that jump to another map, and nested map-groups for floor → building → street. Marker coordinates are stored in image space rather than screen space, so re-fitting a background image keeps every person anchored to their actual physical spot. One person placed on six maps stays one record; edit them once and every placement follows.
+So the database is written so that the very last step is the only one that counts. Everything before it is invisible. If a save dies partway through, you do not get half a database — you get the old one, perfectly intact, as if nothing happened.
 
-The graph is Cytoscape. Tap a node and the layout re-forms around that person; tap another and it re-egos onto them; leave focus and your saved layout comes back. Dragging nodes is layout only — it never mutates data.
+It also works with no internet at all. Changes wait, and sync when you come back.
 
-## The search I actually wanted
+## Search that knows what you meant
 
-Fuzzy, prefix-tolerant, name-boosted — and scoped per attribute with checkboxes. That last part is the whole point: searching "smith" should be able to mean the surname and not every blacksmith in the dataset. Each hit shows which field produced it, and the index updates incrementally as you edit.
+Type "smith" and you probably meant the surname, not every blacksmith in your notes.
 
-## Where it stands
+So you get to choose which fields count. Tick a box and the search only looks there. It shows you which field matched, too, so you can see why something turned up.
 
-Six of eight v1 phases are shipped and verified. The second storage provider was dropped on purpose rather than left dangling — a Mega.nz login is a full-account credential, and the whole premise here is least privilege, so the scoped Drive alternative won that argument.
+## Where it is now
 
-Every dependency is free and open source. tldraw got rejected during research for requiring a paid production licence.
+Most of it is built and working. One planned feature got cut on purpose — a second storage option that would have wanted the password to your entire account. The whole point was to ask for as little as possible, so it did not make it in.
+
+Free and open source, top to bottom.
